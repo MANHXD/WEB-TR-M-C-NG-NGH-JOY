@@ -83,7 +83,14 @@ window.PRODUCTS = [
 // Đánh giá thật của khách (chép từ Shopee, TikTok, Zalo). Để trống thì web ẩn phần đánh giá.
 // sold ở mỗi sản phẩm: số đã bán thật (null = không hiện).
 // Mẫu: { name: "Anh T.", place: "Hà Nội", stars: 5, product: "1100W", text: "...", source: "Shopee" }
-window.REVIEWS = [];
+window.REVIEWS = [
+  { name: "c*****g", date: "06/2026", stars: 5, product: "400W", source: "Shopee", text: "Độ bền: chắc chắn, dễ di chuyển. Dung lượng cho phép cắm nhiều thiết bị. Thiết kế nhỏ gọn, hiện đại, cầm vừa tay. Trạm sạc dự phòng di động 400W, đẹp, bền, mọi người nên mua, cho shop 5 sao đó." },
+  { name: "fp5z_h7mj0", date: "12/2024", stars: 5, product: "1100W", source: "Shopee", text: "Sạc mấy tiếng thôi nhưng thấy dùng được lâu lắm nha, dễ dùng, nhỏ tiện. Nhà mình mang đi du lịch 2 ngày thấy tiện lắm, mình mua sale nên giá còn rẻ nữa." },
+  { name: "ngahungduy", date: "10/2025", stars: 5, product: "600W", source: "Shopee", text: "Tư vấn nhiệt tình, đóng gói siêu cẩn thận. Do sơ suất mình làm cháy ổ sạc, nhắn cho shop, shop xử lý phút mốt, lên đơn mới đổi cho mình luôn. 10 điểm cho shop." },
+  { name: "ttpt159", date: "11/2025", stars: 5, product: "1100W", source: "Shopee", text: "Đang cần để chuẩn bị bão số 13 vào, shop nghe vậy nên đi đơn liền. Bão lụt nên đơn chậm hơn, nhận hàng thấy như quảng cáo, đủ chức năng." },
+  { name: "kimanh14140420", date: "04/2026", stars: 5, product: "500W", source: "Shopee", text: "Thiết kế chắc chắn, pin lớn, bật quạt cây khá ổn. Quạt tản nhiệt chạy nhẹ nhàng, nhỏ gọn dễ di chuyển." },
+  { name: "quynhnhu97.com_", date: "07/2025", stars: 5, product: "600W", source: "Shopee", text: "Đúng với mô tả, chất lượng tuyệt vời. Shop hỗ trợ nhiệt tình, mua dùng lắm việc không lo cúp điện. Rất thích." }
+];
 
 // Thiết bị mẫu cho công cụ "Chạy được bao lâu" (công suất ước lượng phổ biến)
 window.DEVICES = [

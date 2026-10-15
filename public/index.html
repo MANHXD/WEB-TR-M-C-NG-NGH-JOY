@@ -334,7 +334,7 @@ function reviews(){
   return `<section class="blk" style="padding-top:0"><div class="wrap">
     <div class="blk-head"><h2>Khách nói gì sau khi dùng</h2></div>
     <div class="revs">${R.map(r=>`<figure class="rev">${stars(r.stars||5)}<blockquote>${r.text}</blockquote>
-      <figcaption><div><b>${r.name}</b>${r.place?', '+r.place:''}</div><span>Mua máy ${r.product}${r.source?', đánh giá trên '+r.source:''}</span></figcaption></figure>`).join('')}</div>
+      <figcaption><div><b>${r.name}</b>${r.place?', '+r.place:''}</div><span>Mua máy ${r.product}${r.source?', đánh giá trên '+r.source:''}${r.date?', '+r.date:''}</span></figcaption></figure>`).join('')}</div>
   </div></section>`;
 }
 function card(p){
