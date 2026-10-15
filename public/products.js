@@ -27,7 +27,7 @@ window.SHOP = {
 // =====================================================
 window.PRODUCTS = [
   {
-    id: "400w", bestSeller: true, name: "Trạm sạc ENERJOY 400W", watt: 400, sold: null, img: "img/tram-sac-400W.webp",
+    id: "400w", photos: ["img/thuc-te/400w-1.webp", "img/thuc-te/400w-2.webp", "img/thuc-te/400w-3.webp"], bestSeller: true, name: "Trạm sạc ENERJOY 400W", watt: 400, sold: null, img: "img/tram-sac-400W.webp",
     ports: ["1 đèn LED", "2 ổ AC 220V", "6 cổng USB"],
     useFor: ["Cắm trại, dã ngoại", "Quạt, đèn, wifi khi mất điện", "Sạc điện thoại, laptop"],
     variants: [
@@ -36,7 +36,7 @@ window.PRODUCTS = [
     ],
   },
   {
-    id: "500w", name: "Trạm sạc ENERJOY 500W", watt: 500, sold: null, img: "img/tram-sac-500W.webp",
+    id: "500w", photos: ["img/thuc-te/500w-1.webp", "img/thuc-te/500w-2.webp", "img/thuc-te/500w-3.webp"], name: "Trạm sạc ENERJOY 500W", watt: 500, sold: null, img: "img/tram-sac-500W.webp",
     ports: ["1 đèn LED", "2 ổ AC 220V", "4 cổng USB", "2 cổng Type C"],
     useFor: ["Cắm trại, dã ngoại", "Quạt, đèn, wifi khi mất điện", "Sạc nhanh qua Type C"],
     variants: [
@@ -45,7 +45,7 @@ window.PRODUCTS = [
     ],
   },
   {
-    id: "600w", name: "Trạm sạc ENERJOY 600W", watt: 600, sold: null, img: "img/tram-sac-600W.webp",
+    id: "600w", photos: ["img/thuc-te/600w-1.webp", "img/thuc-te/600w-2.webp", "img/thuc-te/600w-3.webp"], name: "Trạm sạc ENERJOY 600W", watt: 600, sold: null, img: "img/tram-sac-600W.webp",
     ports: ["6 đèn LED", "2 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Đi phượt, câu cá, bán hàng đêm", "Quạt, tivi nhỏ, wifi", "Có tẩu cắm thiết bị ô tô"],
     variants: [
@@ -53,7 +53,7 @@ window.PRODUCTS = [
     ],
   },
   {
-    id: "1100w", bestSeller: true, name: "Trạm sạc ENERJOY 1100W", watt: 1100, sold: null, img: "img/tram-sac-1100W.webp",
+    id: "1100w", photos: ["img/thuc-te/1100w-1.webp", "img/thuc-te/1100w-2.webp", "img/thuc-te/1100w-3.webp"], bestSeller: true, name: "Trạm sạc ENERJOY 1100W", watt: 1100, sold: null, img: "img/tram-sac-1100W.webp",
     ports: ["6 đèn LED", "3 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Gia đình dự phòng mất điện", "Quạt, tivi, wifi, camera", "Bán hàng lưu động"],
     variants: [
@@ -61,7 +61,7 @@ window.PRODUCTS = [
     ],
   },
   {
-    id: "1600w", name: "Trạm sạc ENERJOY 1600W", watt: 1600, sold: null, img: "img/tram-sac-1600W.webp",
+    id: "1600w", photos: ["img/thuc-te/1600w-1.webp", "img/thuc-te/1600w-2.webp", "img/thuc-te/1600w-3.webp"], name: "Trạm sạc ENERJOY 1600W", watt: 1600, sold: null, img: "img/tram-sac-1600W.webp",
     ports: ["6 đèn LED", "4 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Dự phòng cả nhà khi mất điện", "Quạt, tủ lạnh, tivi, wifi", "Cửa hàng, quầy bán nhỏ"],
     variants: [
@@ -70,7 +70,7 @@ window.PRODUCTS = [
     ],
   },
   {
-    id: "3000w", name: "Trạm sạc ENERJOY 3000W", watt: 3000, sold: null, img: "img/tram-sac-3000W.webp", sine: true,
+    id: "3000w", photos: ["img/thuc-te/3000w-1.webp", "img/thuc-te/3000w-2.webp", "img/thuc-te/3000w-3.webp"], name: "Trạm sạc ENERJOY 3000W", watt: 3000, sold: null, img: "img/tram-sac-3000W.webp", sine: true,
     ports: ["6 đèn LED", "5 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Sóng sin chuẩn, chạy thiết bị có động cơ", "Dự phòng gia đình, văn phòng", "Công trình, sự kiện ngoài trời"],
     variants: [

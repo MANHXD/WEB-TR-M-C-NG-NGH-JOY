@@ -233,6 +233,22 @@ footer .logo{background:#FFFFFF}
 .use-tx span{color:var(--muted);font-size:15px}
 .use-tx em{font-style:normal;font-weight:600;font-size:14px;color:var(--accent);margin-top:4px}
 .use:hover strong{color:var(--accent)}
+.uses-ph{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:860px){.uses-ph{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.uses-ph{grid-template-columns:1fr}}
+.upc{display:grid;gap:10px;text-decoration:none;color:inherit}
+.upc img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;background:var(--panel);transition:transform .25s}
+.upc:hover img{transform:scale(1.015)}
+.upc strong{font-size:18px;display:block}
+.upc span{color:var(--muted);font-size:15px}
+.upc em{font-style:normal;font-weight:600;font-size:14px;color:var(--accent)}
+.upc:hover strong{color:var(--accent)}
+.pd .ph.photo{padding:0;overflow:hidden}
+.pd .ph.photo img{width:100%;height:100%;max-height:none;object-fit:cover}
+.thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto}
+.thumbs button{flex:0 0 76px;height:58px;padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;background:var(--panel);cursor:pointer}
+.thumbs button.on{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
 .card{transition:border-color .2s}
 .card:hover{transform:none}
 .card .ph,.pd .ph{background:var(--night)}
@@ -306,7 +322,7 @@ const priceText = v => v.price ? fmt(v.price) + 'đ' : 'Liên hệ';
 const minWh = p => Math.min(...p.variants.map(v=>v.wh));
 const maxWh = p => Math.max(...p.variants.map(v=>v.wh));
 const whRange = p => minWh(p)===maxWh(p) ? fmt(minWh(p)) : fmt(minWh(p))+' - '+fmt(maxWh(p));
-let state = { filter:'all', variant:{}, qty:{} };
+let state = { filter:'all', variant:{}, qty:{}, photo:{} };
 const ICON = (()=>{ const P={
   shield:'<path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6l-8-3z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
   swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
@@ -360,6 +376,9 @@ function home(){
   const use = (t,d,id) => { const p=P.find(x=>x.id===id); return `<a class="use" href="#sp-${id}">
       <span class="use-ph"><img src="${p.img}" alt="" loading="lazy" width="1100" height="780"></span>
       <span class="use-tx"><strong>${t}</strong><span>${d}</span><em>Gợi ý: máy ${fmt(p.watt)}W</em></span></a>`; };
+  const usePh = (t,d,id,ph) => { const p=P.find(x=>x.id===id); return `<a class="upc" href="#sp-${id}">
+      <img src="img/thuc-te/${ph}.webp" alt="${t}" loading="lazy" width="1400" height="933">
+      <span><strong>${t}</strong><span>${d}</span></span><em>Gợi ý: máy ${fmt(p.watt)}W</em></a>`; };
   return `
   <section class="hero"><div class="wrap">
     <div class="hero-copy">
@@ -384,12 +403,18 @@ function home(){
 
   <section class="blk"><div class="wrap">
     <div class="blk-head"><h2>Dùng vào việc gì?</h2></div>
-    <div class="uses">
-      ${use('Mất điện ở nhà','Giữ quạt, đèn, wifi, tivi và tủ lạnh chạy qua những giờ cúp điện.','1600w')}
-      ${use('Cắm trại, dã ngoại','Gọn, nặng khoảng 3 kg. Sạc điện thoại, bật đèn, chạy quạt nhỏ qua đêm.','500w')}
-      ${use('Bán hàng đêm, chợ phiên','Đủ cho đèn, loa, quạt và máy tính tiền trong vài tiếng.','600w')}
-      ${use('Công trình, sự kiện ngoài trời','Sóng sin chuẩn, 5 ổ AC, dùng được cho thiết bị có động cơ.','3000w')}
+    <div class="uses-ph">
+      ${usePh('Xem tivi khi cúp điện','Tivi, wifi, đầu thu vẫn chạy như bình thường.','1600w','tivi')}
+      ${usePh('Giữ tủ lạnh không hỏng đồ','Cắm tủ lạnh qua những giờ mất điện mùa hè.','1600w','tu-lanh')}
+      ${usePh('Nấu cơm khi mất điện','Cắm thẳng nồi cơm điện vào ổ 220V của máy.','1600w','noi-com')}
+      ${usePh('Mở cửa cuốn khi mất điện','Không lo kẹt xe trong nhà lúc cúp điện.','3000w','cua-cuon')}
+      ${usePh('Học, làm việc ban đêm','Đèn bàn, laptop, wifi vẫn chạy khi cả khu cúp điện.','600w','lam-viec-dem')}
+      ${usePh('Bữa tối không tắt đèn','Đèn, quạt, sạc điện thoại cho cả nhà lúc mất điện.','600w','bua-toi')}
+      ${usePh('Cắm trại, dã ngoại','Laptop, đèn, loa, sạc điện thoại ngoài trời cả ngày.','1100w','cam-trai')}
+      ${usePh('Nghỉ trong lều qua đêm','Gọn, đặt ngay trong lều để sạc máy và bật đèn.','500w','trong-leu')}
+      ${usePh('Sạc bằng tấm pin mặt trời','Đi xa vẫn nạp lại điện được cho máy.','1100w','pin-mat-troi')}
     </div>
+    <p class="lu-note" style="color:var(--muted);margin-top:14px">Ảnh chụp máy ENERJOY dùng thật.</p>
   </div></section>
 
   <section class="blk" style="padding-top:0"><div class="wrap">
@@ -433,6 +458,11 @@ function list(){
   </div></section>`;
 }
 
+function gallery(p){
+  const imgs=[p.img,...(p.photos||[])], gi=Math.min(state.photo?.[p.id]||0, imgs.length-1), real=gi>0;
+  return `<div class="ph ${real?'photo':''}" style="position:relative">${badges(p)}<img src="${imgs[gi]}" alt="${p.name}${real?', ảnh thực tế':''}" width="1100" height="780"></div>
+    ${imgs.length>1?`<div class="thumbs" role="group" aria-label="Ảnh sản phẩm">${imgs.map((x,i)=>`<button class="${i===gi?'on':''}" data-g="${i}" aria-label="Ảnh ${i+1}"><img src="${x}" alt="" loading="lazy"></button>`).join('')}</div>`:''}`;
+}
 function detail(p){
   const vi = state.variant[p.id] ?? 0, v = p.variants[vi];
   const rows = [
@@ -444,7 +474,7 @@ function detail(p){
   return `<div class="wrap">
     <div class="crumb"><a href="#san-pham">Sản phẩm</a> / ${p.name}</div>
     <div class="pd">
-      <div class="ph" style="position:relative">${badges(p)}<img src="${p.img}" alt="${p.name}" width="1100" height="780"></div>
+      <div>${gallery(p)}</div>
       <div>
         <h1>${p.name}</h1>
         <p class="lead">${p.useFor.join('. ')}.</p>
@@ -522,6 +552,7 @@ function contact(){
 function bind(){
   app.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{state.filter=b.dataset.f;render();});
   app.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{state.variant[cur().id]=+b.dataset.v;render(true);});
+  app.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{state.photo[cur().id]=+b.dataset.g;render(true);});
   app.querySelectorAll('[data-order]').forEach(a=>a.addEventListener('click',()=>{state.order=a.dataset.order;}));
   app.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const i=b.dataset.q;state.qty[i]=Math.max(0,(state.qty[i]||0)+ +b.dataset.d);
     const c=$('#calc'); const p=cur(); const html=calc(p, p&&p.variants[state.variant[p.id]??0]);
