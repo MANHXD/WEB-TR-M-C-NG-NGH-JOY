@@ -17,7 +17,9 @@ npm start              # mở http://localhost:3000
 | `public/products.js` | Thông tin shop (hotline, Zalo, Shopee, TikTok, bảo hành) và giá từng mã. `price: null` thì web hiện "Liên hệ". |
 | `public/index.html` | Giao diện web |
 | `public/img/` | Ảnh sản phẩm và logo |
-| `server.js` | Máy chủ, API nhận đơn |
+| `server.js` | Máy chủ Node.js thường (máy cá nhân, Hostinger), lưu đơn vào file |
+| `api/orders.js` | Hàm nhận đơn khi chạy trên Vercel, báo về Telegram |
+| `lib/orders.js` | Kiểm tra đơn và gửi Telegram, dùng chung cho cả hai |
 | `data/orders.jsonl` | Đơn hàng lưu mỗi dòng một đơn (không đưa lên GitHub) |
 
 ## Đơn hàng
@@ -27,7 +29,23 @@ npm start              # mở http://localhost:3000
 - Muốn có đơn là báo về điện thoại: tạo bot Telegram, điền `TELEGRAM_BOT_TOKEN` và `TELEGRAM_CHAT_ID`.
 - Nếu máy chủ lỗi, form tự chuyển sang copy nội dung đơn để khách gửi qua Zalo.
 
-## Deploy lên Hostinger
+## Deploy miễn phí lên Vercel (đang dùng)
+
+1. Vào https://vercel.com, đăng nhập bằng tài khoản GitHub.
+2. Bấm **Add New > Project**, chọn kho `WEB-TR-M-C-NG-NGH-JOY`, bấm **Import**.
+3. Không cần đổi cấu hình (file `vercel.json` đã khai sẵn). Mở **Environment Variables**, thêm `TELEGRAM_BOT_TOKEN` và `TELEGRAM_CHAT_ID`.
+4. Bấm **Deploy**. Vercel cho link dạng `ten-du-an.vercel.app`. Mỗi lần push lên `main`, web tự cập nhật.
+5. Gắn tên miền riêng (nếu có) trong Settings > Domains.
+
+Trên Vercel không lưu được file, nên đơn hàng chỉ báo về Telegram. Chưa cài Telegram thì form tự chuyển sang cách gửi đơn qua Zalo.
+
+### Lấy mã Telegram
+
+1. Trên Telegram, nhắn `@BotFather`, gõ `/newbot`, đặt tên. BotFather gửi lại token, đó là `TELEGRAM_BOT_TOKEN`.
+2. Nhắn một tin bất kỳ cho bot vừa tạo.
+3. Mở `https://api.telegram.org/bot<TOKEN>/getUpdates`, tìm `"chat":{"id":...}`, số đó là `TELEGRAM_CHAT_ID`.
+
+## Deploy lên Hostinger (gói trả phí)
 
 Cần gói có Node.js (Business Web Hosting trở lên, hoặc Cloud). Gói Single và Premium không chạy được Node.js.
 
