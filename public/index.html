@@ -247,6 +247,12 @@ footer .logo{background:#FFFFFF}
 .ask .btn-pri{background:var(--amber-ink);color:#FFFFFF}
 .ask .btn-ghost{color:var(--amber-ink)}
 footer{border-top:0}
+.pol{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:6px;font-size:14px;color:var(--muted)}
+.pol li{padding-left:18px;position:relative}
+.pol li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.pol b{color:var(--ink);font-weight:600}
+.ft-pol{list-style:none;margin:0;padding:0;display:grid;gap:4px;text-align:right}
+@media (max-width:560px){.ft-pol{text-align:left}}
 a,button,.chip,.var{cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -269,7 +275,7 @@ a,button,.chip,.var{cursor:pointer}
 <footer>
   <div class="wrap">
     <div><span class="logo" role="img" aria-label="ENERJOY" style="width:110px;margin-bottom:8px"></span><span id="ft-addr"></span></div>
-    <div>Bảo hành: <span id="ft-war"></span></div>
+    <ul class="ft-pol" id="ft-pol"></ul>
   </div>
 </footer>
 
@@ -291,11 +297,18 @@ const minWh = p => Math.min(...p.variants.map(v=>v.wh));
 const maxWh = p => Math.max(...p.variants.map(v=>v.wh));
 const whRange = p => minWh(p)===maxWh(p) ? fmt(minWh(p)) : fmt(minWh(p))+' - '+fmt(maxWh(p));
 let state = { filter:'all', variant:{}, qty:{} };
+const ICON = (()=>{ const P={
+  shield:'<path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6l-8-3z"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
+  truck:'<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  box:'<path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="m3 7.5 9 4.5 9-4.5M12 12v9"/>'};
+  const o={}; for(const k in P) o[k]=`<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[k]}</svg></span>`; return o; })();
+
 
 // cấu hình chung
 $('#hotline').textContent = 'Hotline ' + S.phone;
 $('#ft-addr').textContent = S.address;
-$('#ft-war').textContent = S.warranty;
+$('#ft-pol').innerHTML = S.policies.map(x=>`<li>${x.title}</li>`).join('');
 $('#dk-zalo').href = 'https://zalo.me/' + S.zalo;
 $('#dk-zalo').target = '_blank';
 $('#dk-call').href = 'tel:' + S.phone;
@@ -341,11 +354,7 @@ function home(){
   </div></section>
 
   <section class="blk band"><div class="wrap">
-    <div class="why">
-      <div><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></span><h3>Ghi rõ Wh thực tế</h3><p>Mỗi máy ghi dung lượng thật bằng Wh, dễ tính được chạy bao lâu.</p></div>
-      <div><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0V8zM12 18v4"/></svg></span><h3>Ổ cắm 220V như ở nhà</h3><p>Từ 2 đến 5 ổ AC, kèm cổng USB, Type C và tẩu ô tô.</p></div>
-      <div><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z"/></svg></span><h3>Có đèn LED sẵn</h3><p>Bật đèn ngay trên máy khi mất điện hoặc ngoài trời.</p></div>
-      <div><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7z"/></svg></span><h3>Hướng dẫn tiếng Việt</h3><p>Đi kèm củ sạc và sách hướng dẫn sử dụng tiếng Việt.</p></div>
+    <div class="why">${S.policies.map(x=>`<div>${ICON[x.icon]}<h3>${x.title}</h3><p>${x.text}</p></div>`).join('')}
     </div>
   </div></section>
 
@@ -374,7 +383,8 @@ function home(){
     <details><summary>Wh là gì, sao không ghi mAh?</summary><p>Wh là lượng điện máy chứa được. Lấy Wh chia cho công suất thiết bị là ra số giờ chạy gần đúng. Số mAh dễ bị ghi to vì tính theo điện áp pin 3.7V, nên ENERJOY ghi Wh cho dễ so sánh.</p></details>
     <details><summary>Sạc đầy mất bao lâu?</summary><p>Từ 4 đến 10 tiếng tùy máy. Dòng 600W và 1100W cắm 2 củ sạc cùng lúc thì còn khoảng 4 tiếng.</p></details>
     <details><summary>Sóng sin chuẩn khác gì?</summary><p>Dòng 3000W dùng sóng sin chuẩn, giống điện lưới, phù hợp thiết bị có động cơ hoặc thiết bị nhạy điện.</p></details>
-    <details><summary>Bảo hành thế nào?</summary><p id="faq-war"></p></details>
+    <details><summary>Bảo hành thế nào?</summary><p>Máy được bảo hành chính hãng 5 năm. Trong 7 - 15 ngày đầu, nếu máy lỗi từ nhà sản xuất thì shop đổi máy mới, 1 đổi 1.</p></details>
+    <details><summary>Phí ship và cách nhận hàng?</summary><p>Shop miễn phí giao hàng toàn quốc. Bạn được mở hộp kiểm tra máy trước, ưng rồi mới thanh toán.</p></details>
   </div></section>
 
   <section class="ask"><div class="wrap">
@@ -416,6 +426,7 @@ function detail(p){
         <div class="lbl">Cổng ra</div>
         <ul class="ports">${p.ports.map(x=>`<li>${x}</li>`).join('')}</ul>
         <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
+        <ul class="pol">${S.policies.map(x=>`<li><b>${x.title}.</b> ${x.text}</li>`).join('')}</ul>
         <div class="btns">
           <a class="btn btn-pri" href="#lien-he" data-order="${v.code}">Đặt mua ${v.code}</a>
           <a class="btn btn-ghost" href="https://zalo.me/${S.zalo}" target="_blank" rel="noopener">Hỏi qua Zalo</a>
@@ -509,7 +520,6 @@ function bind(){
       </div>`;
     copy(); $('#o-recopy').onclick=copy;
   };
-  const fw=$('#faq-war'); if(fw) fw.textContent=S.warranty;
 }
 
 function cur(){ const h=location.hash.slice(1); return h.startsWith('sp-') ? P.find(p=>p.id===h.slice(3)) : null; }

@@ -10,7 +10,14 @@ window.SHOP = {
   shopee: "https://s.shopee.vn/30omLlFXi1",
   tiktok: "https://vt.tiktok.com/ZS9Ur7LqbBabW-39Li8/",
   address: "Đang cập nhật",     // TODO: địa chỉ kho / cửa hàng
-  warranty: "Đang cập nhật",    // TODO: chính sách bảo hành
+  warranty: "Bảo hành chính hãng 5 năm",
+  // Chính sách bán hàng, hiện ở trang chủ, trang sản phẩm, hỏi đáp và chân trang
+  policies: [
+    { icon: "shield", title: "Bảo hành 5 năm", text: "Cam kết bảo hành chính hãng 5 năm." },
+    { icon: "swap", title: "Lỗi 1 đổi 1", text: "Đổi máy mới trong 7 - 15 ngày nếu lỗi từ nhà sản xuất." },
+    { icon: "truck", title: "Miễn phí giao hàng", text: "Giao toàn quốc, không tính phí ship." },
+    { icon: "box", title: "Kiểm tra trước khi trả tiền", text: "Mở hộp xem máy rồi mới thanh toán." },
+  ],
 };
 
 // =====================================================
