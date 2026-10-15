@@ -253,6 +253,16 @@ footer{border-top:0}
 .pol b{color:var(--ink);font-weight:600}
 .ft-pol{list-style:none;margin:0;padding:0;display:grid;gap:4px;text-align:right}
 @media (max-width:560px){.ft-pol{text-align:left}}
+.badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:1}
+.badges .badge{position:static}
+.sold{margin:-8px 0 12px;font-size:14px;font-weight:600;color:var(--accent)}
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:900px){.revs{grid-template-columns:1fr}}
+.rev{margin:0;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;gap:10px;align-content:start}
+.rev blockquote{margin:0;font-size:15px}
+.rev figcaption{font-size:14px;display:grid}
+.rev figcaption span{color:var(--muted);font-size:13px}
+.stars{color:var(--amber);letter-spacing:2px}.stars span{color:var(--line)}
 a,button,.chip,.var{cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -313,10 +323,24 @@ $('#dk-zalo').href = 'https://zalo.me/' + S.zalo;
 $('#dk-zalo').target = '_blank';
 $('#dk-call').href = 'tel:' + S.phone;
 
+function badges(p){
+  const b=[p.bestSeller&&'Bán chạy',p.sine&&'Sin chuẩn'].filter(Boolean);
+  return b.length?`<span class="badges">${b.map(x=>`<span class="badge">${x}</span>`).join('')}</span>`:'';
+}
+const soldText = p => p.sold ? `Đã bán ${fmt(p.sold)}` : '';
+const stars = n => '<span class="stars" aria-label="'+n+' sao">'+'★'.repeat(n)+'<span>'+'★'.repeat(5-n)+'</span></span>';
+function reviews(){
+  const R=window.REVIEWS||[]; if(!R.length) return '';
+  return `<section class="blk" style="padding-top:0"><div class="wrap">
+    <div class="blk-head"><h2>Khách nói gì sau khi dùng</h2></div>
+    <div class="revs">${R.map(r=>`<figure class="rev">${stars(r.stars||5)}<blockquote>${r.text}</blockquote>
+      <figcaption><div><b>${r.name}</b>${r.place?', '+r.place:''}</div><span>Mua máy ${r.product}${r.source?', đánh giá trên '+r.source:''}</span></figcaption></figure>`).join('')}</div>
+  </div></section>`;
+}
 function card(p){
   const v0 = p.variants[0];
   return `<a class="card" href="#sp-${p.id}">
-    <div class="ph">${p.sine?'<span class="badge">Sin chuẩn</span>':''}<img src="${p.img}" alt="${p.name}" loading="lazy" width="1100" height="780"></div>
+    <div class="ph">${badges(p)}<img src="${p.img}" alt="${p.name}" loading="lazy" width="1100" height="780"></div>
     <div class="bd">
       <h3>${p.name}</h3>
       <dl class="specs">
@@ -325,7 +349,7 @@ function card(p){
         <div><dt>Ổ AC</dt><dd>${p.ports.find(x=>x.includes('AC')).split(' ')[0]}</dd></div>
       </dl>
       <div class="meter"><div class="meter-top"><span>Mức dung lượng</span><b>${fmt(maxWh(p))} Wh</b></div><div class="bar"><i style="width:${Math.max(6,Math.round(maxWh(p)/2590*100))}%"></i></div></div>
-      <div class="price"><span>${p.variants.length>1? p.variants.length+' phiên bản' : v0.kg+' kg'}</span><strong>${priceText(v0)}</strong></div>
+      <div class="price"><span>${soldText(p) || (p.variants.length>1? p.variants.length+' phiên bản' : v0.kg+' kg')}</span><strong>${priceText(v0)}</strong></div>
     </div></a>`;
 }
 
@@ -378,6 +402,8 @@ function home(){
     ${calc(null)}
   </div></section>
 
+  ${reviews()}
+
   <section class="blk" style="padding-top:0"><div class="wrap faq">
     <div class="blk-head"><h2>Khách hay hỏi</h2></div>
     <details><summary>Wh là gì, sao không ghi mAh?</summary><p>Wh là lượng điện máy chứa được. Lấy Wh chia cho công suất thiết bị là ra số giờ chạy gần đúng. Số mAh dễ bị ghi to vì tính theo điện áp pin 3.7V, nên ENERJOY ghi Wh cho dễ so sánh.</p></details>
@@ -418,10 +444,11 @@ function detail(p){
   return `<div class="wrap">
     <div class="crumb"><a href="#san-pham">Sản phẩm</a> / ${p.name}</div>
     <div class="pd">
-      <div class="ph">${p.sine?'<span class="badge" style="position:static;justify-self:start;align-self:start">Sin chuẩn</span>':''}<img src="${p.img}" alt="${p.name}" width="1100" height="780"></div>
+      <div class="ph" style="position:relative">${badges(p)}<img src="${p.img}" alt="${p.name}" width="1100" height="780"></div>
       <div>
         <h1>${p.name}</h1>
         <p class="lead">${p.useFor.join('. ')}.</p>
+        ${soldText(p)?`<p class="sold">${soldText(p)}</p>`:''}
         ${p.variants.length>1?`<div class="lbl">Chọn phiên bản pin</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${fmt(x.wh)} Wh, sạc ${x.charge1}</small></button>`).join('')}</div>`:''}
         <div class="lbl">Cổng ra</div>
         <ul class="ports">${p.ports.map(x=>`<li>${x}</li>`).join('')}</ul>
