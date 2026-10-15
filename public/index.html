@@ -466,7 +466,7 @@ function contact(){
         <label>Sản phẩm<select id="o-sku">${opts}</select></label>
         <label>Số lượng<input id="o-qty" type="number" min="1" value="1"></label>
         <label>Địa chỉ nhận hàng<textarea id="o-addr" placeholder="Số nhà, đường, phường, quận, tỉnh"></textarea></label>
-        <button class="btn btn-pri" type="submit">Gửi đơn hàng</button>
+        <button class="btn btn-pri" type="submit">Đặt hàng qua Zalo</button>
         <div id="o-out" hidden></div>
       </form>
       <div class="ch">
@@ -495,21 +495,19 @@ function bind(){
     if(!name||!phone){out.innerHTML='<p class="over" style="margin:0">Bạn điền giúp họ tên và số điện thoại nhé.</p>';return;}
     const body={name, phone, sku:$('#o-sku').value, qty:$('#o-qty').value, address:$('#o-addr').value.trim()};
     const msg=`ĐƠN HÀNG ENERJOY\nHọ tên: ${name}\nSĐT: ${phone}\nSản phẩm: ${body.sku} x ${body.qty}\nĐịa chỉ: ${body.address}`;
-    const btn=f.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Đang gửi đơn...';
-    // Gửi đơn về máy chủ. Nếu lỗi mạng thì chuyển sang gửi qua Zalo.
-    fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
-      .then(r=>r.json().then(j=>({status:r.status,j})))
-      .then(({status,j})=>{
-        if(j.ok){ f.reset(); out.innerHTML=`<div class="out">Shop đã nhận đơn ${j.id}. Shop sẽ gọi lại số ${phone.replace(/</g,'')} để xác nhận.</div>`; }
-        else if(status===400||status===429){ out.innerHTML=`<p class="over" style="margin:0">${j.error}</p>`; }
-        else throw new Error(j.error);
-      })
-      .catch(()=>{
-        out.innerHTML=`<div class="out" id="o-msg">${msg.replace(/</g,'&lt;')}</div><p style="font-size:14px;color:var(--muted);margin:8px 0">Chưa gửi được đơn lên web. Nội dung đơn đã được copy, bạn mở Zalo shop và dán vào tin nhắn giúp shop nhé.</p><a class="btn btn-ghost btn-sm" href="https://zalo.me/${S.zalo}" target="_blank" rel="noopener">Mở Zalo shop</a>`;
-        const sel=()=>{const r=document.createRange();r.selectNodeContents($('#o-msg'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
-        try{navigator.clipboard.writeText(msg).catch(sel);}catch(_){sel();}
-      })
-      .finally(()=>{btn.disabled=false;btn.textContent='Gửi đơn hàng';});
+    if(!/^(\+?84|0)\d{9,10}$/.test(phone.replace(/[\s.]/g,''))){out.innerHTML='<p class="over" style="margin:0">Số điện thoại chưa đúng, kiểm tra lại giúp shop nhé.</p>';return;}
+    // Đơn gửi qua Zalo của shop: copy nội dung đơn, khách mở Zalo và dán vào khung chat.
+    // Zalo không cho điền sẵn tin nhắn qua link, nên phải copy rồi dán.
+    const copy=()=>{const sel=()=>{const r=document.createRange();r.selectNodeContents($('#o-msg'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+      try{navigator.clipboard.writeText(msg).then(()=>{$('#o-copied').textContent='Đã copy nội dung đơn.';}).catch(sel);}catch(_){sel();}};
+    out.innerHTML=`<div class="zalo-steps">
+        <p style="margin:0 0 8px;font-weight:600">Còn 1 bước: gửi đơn này cho shop qua Zalo</p>
+        <div class="out" id="o-msg">${msg.replace(/</g,'&lt;')}</div>
+        <p id="o-copied" style="font-size:14px;color:var(--ok);margin:8px 0 4px"></p>
+        <p style="font-size:14px;color:var(--muted);margin:0 0 12px">Bấm nút bên dưới để mở Zalo shop (số ${S.zalo}), dán nội dung đơn vào khung chat rồi bấm gửi. Shop sẽ gọi lại để xác nhận.</p>
+        <div class="btns"><a class="btn btn-pri" href="https://zalo.me/${S.zalo}" target="_blank" rel="noopener">Mở Zalo và dán đơn</a><button class="btn btn-ghost btn-sm" type="button" id="o-recopy">Copy lại nội dung</button></div>
+      </div>`;
+    copy(); $('#o-recopy').onclick=copy;
   };
   const fw=$('#faq-war'); if(fw) fw.textContent=S.warranty;
 }
