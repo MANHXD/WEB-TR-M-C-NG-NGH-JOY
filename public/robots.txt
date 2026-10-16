@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://web-tr-m-c-ng-ngh-joy.vercel.app/sitemap.xml
+Sitemap: https://enerjoy.vn/sitemap.xml

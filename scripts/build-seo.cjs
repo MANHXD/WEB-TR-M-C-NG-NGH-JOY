@@ -4,7 +4,7 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 
 const ROOT = path.join(__dirname, '..'), PUB = path.join(ROOT, 'public');
-const BASE = (process.env.SITE_URL || 'https://web-tr-m-c-ng-ngh-joy.vercel.app').replace(/\/$/, '');
+const BASE = (process.env.SITE_URL || 'https://enerjoy.vn').replace(/\/$/, '');
 const SHOP_NAME = 'Đức Trạm Sạc';
 
 const sb = { window: {} };
