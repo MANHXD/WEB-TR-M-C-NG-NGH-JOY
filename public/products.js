@@ -105,6 +105,7 @@ window.DEVICES = [
   { name: "Nồi cơm điện", w: 600 },
 ];
 
+// fit: câu hiển thị ở trang tấm pin. fits: máy nào dùng được, max = số tấm ghép tối đa (theo lời MẠNH 2026-10-16).
 // Tấm pin năng lượng mặt trời MONO (sheet "NĂNG LƯỢNG MẶT TRỜI MONO" trong file Excel). price: null thì web hiện "Liên hệ".
 window.SOLAR = [
   {
@@ -112,9 +113,9 @@ window.SOLAR = [
     photos: ["img/nlmt/mono-2.webp", "img/nlmt/mono-3.webp", "img/nlmt/mono-4.webp", "img/nlmt/mono-mat-truoc-sau.webp"],
     useFor: ["Nạp điện cho trạm sạc khi cắm trại, đi xa", "Hộp đấu nối chống nước IP67", "Chịu nhiệt từ -40 °C đến 85 °C"],
     variants: [
-      { code: "NLMT MONO 100W", w: 100, volt: "18V", cells: 32, eff: "23%", size: "450 x 1190 x 25 x 20 mm", kg: 5.1, price: null,
+      { code: "NLMT MONO 100W", w: 100, volt: "18V", cells: 32, eff: "23%", size: "450 x 1190 x 25 x 20 mm", kg: 5.1, price: null, fit: "Dùng cho trạm ENERJOY 400W, 500W, 600W, 1100W, 1600W. Máy 600W và 1100W ghép tối đa 2 tấm", fits: [{ w: 400 }, { w: 500 }, { w: 600, max: 2 }, { w: 1100, max: 2 }, { w: 1600 }],
         specs: [["Công suất tối đa", "100 W"], ["Sai số", "3%"], ["Điện áp mạch hở", "23,26 V"], ["Điện áp tại công suất tối đa", "19,38 V"], ["Dòng điện tại công suất tối đa", "5,16 A"], ["Dòng ngắn mạch", "5,58 A"], ["Hiệu suất mô-đun", "18,7%"], ["Hiệu suất tế bào quang điện", "23%"], ["Cầu chì nối tiếp định mức", "10 A"], ["Hộp đấu nối", "IP67"], ["Điện áp hệ thống tối đa", "DC 1500 V"], ["Nhiệt độ hoạt động", "-40 °C đến 85 °C"]] },
-      { code: "NLMT MONO 200W", w: 200, volt: "24V", cells: 48, eff: "24,6%", size: "770 x 1160 x 30 x 25 mm", kg: 8.5, price: null,
+      { code: "NLMT MONO 200W", w: 200, volt: "24V", cells: 48, eff: "24,6%", size: "770 x 1160 x 30 x 25 mm", kg: 8.5, price: null, fit: "Dùng cho trạm ENERJOY 3000W, có thể ghép 1 đến 2 tấm", fits: [{ w: 3000, max: 2 }],
         specs: [["Công suất tối đa", "200 W"], ["Sai số", "3%"], ["Điện áp mạch hở", "32,83 V"], ["Điện áp tại công suất tối đa", "27,36 V"], ["Dòng điện tại công suất tối đa", "7,31 A"], ["Dòng ngắn mạch", "7,9 A"], ["Hiệu suất mô-đun", "22,4%"], ["Hiệu suất tế bào quang điện", "24,6%"], ["Cầu chì nối tiếp định mức", "10 A"], ["Hộp đấu nối", "IP67"], ["Điện áp hệ thống tối đa", "DC 1000 V"], ["Nhiệt độ hoạt động", "-40 °C đến 85 °C"]] }
     ]
   }

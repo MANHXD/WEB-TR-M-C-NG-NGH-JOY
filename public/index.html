@@ -348,6 +348,7 @@ a,button,.chip,.var{cursor:pointer}
 .rev:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 14px 30px -18px rgba(20,27,92,.4)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}.rv{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.fit{margin:14px 0 0;padding:10px 14px;border-left:4px solid #FFB81C;background:rgba(255,184,28,.12);border-radius:8px;font-weight:600}
 </style>
 </head>
 <body>
@@ -559,7 +560,7 @@ function gallery(p){
 }
 function solarDetail(p){
   const vi = state.variant[p.id] ?? 0, v = p.variants[vi];
-  const rows = [['Mã sản phẩm', v.code], ['Điện áp', v.volt], ['Số cell pin', v.cells], ['Hiệu suất', v.eff], ['Kích thước', v.size], ['Trọng lượng', String(v.kg).replace('.',',')+' kg'], ...v.specs.slice(1)];
+  const rows = [['Mã sản phẩm', v.code], ['Điện áp', v.volt], ['Số cell pin', v.cells], ['Hiệu suất', v.eff], ['Kích thước', v.size], ['Trọng lượng', String(v.kg).replace('.',',')+' kg'], ...(v.fits?[['Dùng cho trạm sạc', v.fits.map(f=>'ENERJOY '+f.w+'W'+(f.max?' (tối đa '+f.max+' tấm)':'')).join(', ')]]:[]), ...v.specs.slice(1)];
   return `<div class="wrap">
     <div class="crumb"><a href="#san-pham">Sản phẩm</a> / ${p.name}</div>
     <div class="pd">
@@ -568,6 +569,7 @@ function solarDetail(p){
         <h1>${p.name}</h1>
         <p class="lead">${p.useFor.join('. ')}.</p>
         <div class="lbl">Chọn công suất</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${x.volt}, ${String(x.kg).replace('.',',')} kg</small></button>`).join('')}</div>
+        ${v.fit?`<p class="fit">${v.fit}.</p>`:''}
         <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
         <ul class="pol">${S.policies.map(x=>`<li><b>${x.title}.</b> ${x.text}</li>`).join('')}</ul>
         <div class="btns">
@@ -598,6 +600,7 @@ function detail(p){
         <p class="lead">${p.useFor.join('. ')}.</p>
         ${soldText(p)?`<p class="sold">${soldText(p)}</p>`:''}
         ${p.variants.length>1?`<div class="lbl">Chọn phiên bản pin</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${fmt(x.wh)} Wh, sạc ${x.charge1}</small></button>`).join('')}</div>`:''}
+        ${SO.flatMap(s=>s.variants.map(x=>[s,x,(x.fits||[]).find(f=>f.w===p.watt)]).filter(a=>a[2])).map(([s,x,f])=>`<p class="fit">Sạc bằng năng lượng mặt trời: dùng <a href="#sp-${s.id}">${x.code}</a>${f.max?`, ghép tối đa ${f.max} tấm`:''}.</p>`).join('')}
         <div class="lbl">Cổng ra</div>
         <ul class="ports">${p.ports.map(x=>`<li>${x}</li>`).join('')}</ul>
         <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
