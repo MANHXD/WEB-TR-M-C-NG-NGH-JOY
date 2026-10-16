@@ -409,8 +409,9 @@ function card(p){
 }
 
 function home(){
-  // chiều cao thật (mm, cột thứ 3 trong file) và tỉ lệ ảnh, để xếp 6 máy cạnh nhau đúng to nhỏ
-  const H = {'400w':119,'500w':162,'600w':196,'1100w':190,'1600w':189,'3000w':265};
+  // chiều cao hiển thị (đơn vị tương đối) để 6 máy to dần từ 400W đến 3000W.
+  // Số kích thước trong file gốc của 600W, 1100W, 1600W chưa khớp với máy thật nên chưa dùng.
+  const H = {'400w':119,'500w':145,'600w':168,'1100w':190,'1600w':212,'3000w':265};
   const AR = {'400w':1100/733,'500w':1100/794,'600w':1100/803,'1100w':1100/779,'1600w':1100/738,'3000w':1100/761};
   const use = (t,d,id) => { const p=P.find(x=>x.id===id); return `<a class="use" href="#sp-${id}">
       <span class="use-ph"><img src="${p.img}" alt="" loading="lazy" width="1100" height="780"></span>
@@ -432,7 +433,7 @@ function home(){
     </div>
     <div class="lineup">${P.map((p,i)=>`<a class="lu" href="#sp-${p.id}" style="--i:${i};--mm:${H[p.id]};--ar:${AR[p.id].toFixed(3)}">
       <img src="${p.img}" alt="${p.name}" width="1100" height="${Math.round(1100/AR[p.id])}"><span class="lu-w">${fmt(p.watt)}W</span><span class="lu-wh">${whRange(p)} Wh</span></a>`).join('')}</div>
-    <p class="lu-note">Sáu dòng máy xếp cạnh nhau theo chiều cao thật, từ 119 mm đến 265 mm. Bấm vào máy để xem chi tiết, trên điện thoại vuốt ngang để xem đủ 6 máy.</p>
+    <p class="lu-note">Sáu dòng máy xếp từ nhỏ đến lớn. Bấm vào máy để xem chi tiết, trên điện thoại vuốt ngang để xem đủ 6 máy.</p>
   </div></section>
 
   <section class="blk band"><div class="wrap">
