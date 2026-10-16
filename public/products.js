@@ -7,6 +7,7 @@ window.SHOP = {
   phone: "0926372001",
   zalo: "0926372001",           // đang dùng chung số hotline
   messenger: "",                // TODO: link m.me/tenpage
+  gaId: "G-TEST123",                   // mã Google Analytics 4 (dạng G-XXXXXXXXXX). Để trống thì không đo.
   shopee: "https://s.shopee.vn/30omLlFXi1",
   tiktok: "https://vt.tiktok.com/ZS9Ur7LqbBabW-39Li8/",
   address: "Đang cập nhật",     // TODO: địa chỉ kho / cửa hàng

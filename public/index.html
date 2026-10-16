@@ -383,6 +383,20 @@ a,button,.chip,.var{cursor:pointer}
 <script>
 (function(){
 const S = window.SHOP, P = window.PRODUCTS, D = window.DEVICES, SO = window.SOLAR || [], ALL = P.concat(SO);
+// Đo lượt truy cập bằng Google Analytics 4: chỉ chạy khi SHOP.gaId có mã.
+const track = (()=>{
+  if(!/^G-[A-Z0-9]+$/.test(S.gaId||'')) return ()=>{};
+  window.dataLayer = window.dataLayer || []; window.gtag = function(){ dataLayer.push(arguments); };
+  gtag('js', new Date()); gtag('config', S.gaId, { send_page_view:false });
+  const sc = document.createElement('script'); sc.async = true; sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + S.gaId; document.head.appendChild(sc);
+  document.addEventListener('click', e=>{
+    const a = e.target.closest('a'); if(!a) return;
+    const h = a.getAttribute('href')||'', item = (cur()||{}).name;
+    const kind = h.includes('zalo.me')?'bam_zalo':h.startsWith('tel:')?'bam_goi':h.includes('shopee')?'bam_shopee':h.includes('tiktok')?'bam_tiktok':a.dataset.order?'bam_dat_mua':'';
+    if(kind) gtag('event', kind, { san_pham: a.dataset.order || item || 'chung' });
+  }, true);
+  return (name, params)=>gtag('event', name, params);
+})();
 const $ = (s, el=document) => el.querySelector(s);
 const app = $('#app');
 const fmt = n => n.toLocaleString('vi-VN');
@@ -688,6 +702,7 @@ function bind(){
     if(!/^(\+?84|0)\d{9,10}$/.test(phone.replace(/[\s.]/g,''))){out.innerHTML='<p class="over" style="margin:0">Số điện thoại chưa đúng, kiểm tra lại giúp shop nhé.</p>';return;}
     // Đơn gửi qua Zalo của shop: copy nội dung đơn, khách mở Zalo và dán vào khung chat.
     // Zalo không cho điền sẵn tin nhắn qua link, nên phải copy rồi dán.
+    track('gui_don', { san_pham: body.sku, so_luong: body.qty });
     const copy=()=>{const sel=()=>{const r=document.createRange();r.selectNodeContents($('#o-msg'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
       try{navigator.clipboard.writeText(msg).then(()=>{$('#o-copied').textContent='Đã copy nội dung đơn.';}).catch(sel);}catch(_){sel();}};
     out.innerHTML=`<div class="zalo-steps">
@@ -713,6 +728,8 @@ function render(keepScroll){
   else { app.innerHTML = home(); document.title='ENERJOY Trạm Sạc'; if(h==='tinh-gio'){ requestAnimationFrame(()=>$('#tinh-gio').scrollIntoView()); keepScroll=true; } }
   document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===page));
   bind();
+  track('page_view', { page_title: document.title, page_location: location.href, page_path: '/' + h });
+  if(p) track('xem_san_pham', { san_pham: p.name });
   if(!keepScroll){ window.scrollTo(0,0); reveal(); }
 }
 function reveal(){
