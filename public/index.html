@@ -644,7 +644,10 @@ function calc(p, v){
   const devs = D.map((d,i)=>`<div class="dev"><div>${d.name}<div class="w">${d.w}W${d.per?`, tính theo số ${d.unit.replace(' đầy','')}`:''}</div></div>
     <div class="qty"><button data-q="${i}" data-d="-1" aria-label="Bớt ${d.name}">−</button><output>${qty[i]||0}</output><button data-q="${i}" data-d="1" aria-label="Thêm ${d.name}">+</button></div></div>`).join('');
   const hrs = h => h>=1? h.toFixed(1).replace('.',',')+' giờ' : Math.round(h*60)+' phút';
-  const times = (wh,x) => { if(p&&x.d.minW&&p.watt<x.d.minW) return 'không đủ công suất'; const t = Math.floor(wh/(x.d.per*x.n)+1e-9); return t>=1? `${t} ${x.d.unit}` : `chưa đủ 1 ${x.d.unit}`; };
+  const times = (wh,x) => { if(p&&x.d.minW&&p.watt<x.d.minW) return 'không đủ công suất'; const t = Math.floor(wh/(x.d.per*x.n)+1e-9), t2 = x.d.perMin? Math.floor(wh/(x.d.perMin*x.n)+1e-9) : t;
+    if(t2<1) return `chưa đủ 1 ${x.d.unit}`;
+    const n = t2>t? `${Math.max(t,1)}-${t2}` : `${t}`, hr = x.d.hoursEach? `, dùng thêm khoảng ${t2>t?`${Math.max(t,1)*x.d.hoursEach}-${t2*x.d.hoursEach}`:t*x.d.hoursEach} giờ` : '';
+    return `${n} ${x.d.unit}${hr}`; };
   const lines = (wh) => [...(cont?[(cnt.length?'Thiết bị khác: ':'')+hrs(wh*0.85/cont)]:[]), ...cnt.map(x=>`${x.d.name}${x.n>1?` (${x.n} cái, mỗi cái)`:''}: ${times(wh,x)}`)];
   const okFor = pp => pp.watt>=total*1.2 && D.every((d,i)=>!(qty[i]&&d.minW&&pp.watt<d.minW));
   const cntNote = cnt.length? ' Laptop và nồi cơm tính theo số lần, mỗi loại tính như khi dùng cả pin cho riêng nó.' : '';
