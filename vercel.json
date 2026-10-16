@@ -3,6 +3,21 @@
   "buildCommand": "",
   "outputDirectory": "public",
   "functions": {
-    "api/orders.js": { "includeFiles": "public/products.js" }
-  }
+    "api/orders.js": {
+      "includeFiles": "public/products.js"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "web-tr-m-c-ng-ngh-joy.vercel.app"
+        }
+      ],
+      "destination": "https://www.enerjoy.vn/:path*",
+      "permanent": true
+    }
+  ]
 }
