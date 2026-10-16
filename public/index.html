@@ -600,7 +600,7 @@ function detail(p){
         <p class="lead">${p.useFor.join('. ')}.</p>
         ${soldText(p)?`<p class="sold">${soldText(p)}</p>`:''}
         ${p.variants.length>1?`<div class="lbl">Chọn phiên bản pin</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${fmt(x.wh)} Wh, sạc ${x.charge1}</small></button>`).join('')}</div>`:''}
-        ${SO.flatMap(s=>s.variants.map(x=>[s,x,(x.fits||[]).find(f=>f.w===p.watt)]).filter(a=>a[2])).map(([s,x,f])=>`<p class="fit">Sạc bằng năng lượng mặt trời: dùng <a href="#sp-${s.id}">${x.code}</a>${f.max?`, ghép tối đa ${f.max} tấm`:''}.</p>`).join('')}
+        ${SO.flatMap(s=>s.variants.map(x=>[s,x,(x.fits||[]).find(f=>f.w===p.watt)]).filter(a=>a[2])).map(([s,x,f])=>`<p class="fit">Sạc bằng năng lượng mặt trời: dùng <a href="#sp-${s.id}">${x.code}</a>${f.max===1?', tối đa 1 tấm':f.max?`, ghép tối đa ${f.max} tấm`:''}.</p>`).join('')}
         <div class="lbl">Cổng ra</div>
         <ul class="ports">${p.ports.map(x=>`<li>${x}</li>`).join('')}</ul>
         <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
