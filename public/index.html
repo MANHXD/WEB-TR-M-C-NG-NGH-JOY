@@ -658,7 +658,7 @@ function calc(p, v){
   if(!total){ res = `<div class="note">Bấm + để thêm thiết bị nhà bạn hay dùng khi mất điện.</div>`; }
   else if(p){
     const L = lines(v.wh);
-    res = `<div><div class="big">${L[0]}</div>${L.slice(1).map(x=>`<div class="big" style="font-size:22px;margin-top:6px">${x}</div>`).join('')}<div class="note" style="flex-basis:auto">${v.code}, tổng tải ${fmt(total)}W</div></div>
+    res = `<div><div class="big"${cont?'':' style="font-size:22px"'}>${L[0]}</div>${L.slice(1).map(x=>`<div class="big" style="font-size:22px;margin-top:6px">${x}</div>`).join('')}<div class="note" style="flex-basis:auto">${v.code}, tổng tải ${fmt(total)}W</div></div>
       ${D.some((d,i)=>qty[i]&&d.minW&&p.watt<d.minW)?`<div class="over">Máy ${fmt(p.watt)}W không đủ công suất cho ${D.filter((d,i)=>qty[i]&&d.minW&&p.watt<d.minW).map(d=>d.name.toLowerCase()).join(', ')}. Cần máy từ ${fmt(Math.max(...D.filter((d,i)=>qty[i]&&d.minW).map(d=>d.minW)))}W trở lên.</div>`:total>p.watt?`<div class="over">Tổng tải vượt ${fmt(p.watt)}W, nên chọn máy lớn hơn.</div>`:''}
       ${ex}<div class="note">Ước tính theo dung lượng thực tế x 85% hiệu suất. Tủ lạnh chạy ngắt quãng nên thực tế lâu hơn.${cntNote}</div>`;
   } else {
