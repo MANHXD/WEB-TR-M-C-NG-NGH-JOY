@@ -298,6 +298,9 @@ a,button,.chip,.var{cursor:pointer}
 .tl .tg span.o{background:transparent;color:#4FB6FF;border:1px solid rgba(79,182,255,.5)}
 .tl h3{margin:4px 0 0;font-size:18px;color:#FFFFFF}
 .tl .wh{font-weight:800;font-size:20px;color:#FFFFFF;font-variant-numeric:tabular-nums}
+.tl .cds{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tl .cds b{white-space:nowrap;font-size:15px;font-weight:700;padding:5px 10px;border-radius:8px;background:rgba(141,155,255,.14);border:1px solid rgba(141,155,255,.3);color:#FFFFFF}
+.tl.big .cds b{font-size:20px;padding:7px 12px}
 .tl .wh small{display:block;font-size:12px;font-weight:500;color:#AEB9D6}
 .tl .m{color:#AEB9D6;font-size:14px;margin:6px 0 10px}
 .tl .go{display:inline-flex;align-self:start;justify-self:start;margin-top:6px;font-weight:700;font-size:15px;padding:11px 18px;border-radius:10px;background:var(--amber);color:var(--amber-ink)}
@@ -382,6 +385,7 @@ const app = $('#app');
 const fmt = n => n.toLocaleString('vi-VN');
 const priceText = v => v.price ? fmt(v.price) + 'đ' : 'Liên hệ';
 const minWh = p => Math.min(...p.variants.map(v=>v.wh));
+const codes = p => p.variants.map(v=>v.code).join(' / ');
 const maxWh = p => Math.max(...p.variants.map(v=>v.wh));
 const whRange = p => minWh(p)===maxWh(p) ? fmt(minWh(p)) : fmt(minWh(p))+' - '+fmt(maxWh(p));
 let state = { filter:'all', variant:{}, qty:{}, photo:{} };
@@ -419,7 +423,7 @@ function tile(p,big){
   const tg=[p.bestSeller&&'<span>Bán chạy</span>',p.sine&&'<span class="o">Sin chuẩn</span>'].filter(Boolean).join('');
   const ac=(p.ports.find(x=>/AC/.test(x))||'').replace(/ổ AC/,'ổ AC');
   const info=`<div class="tg">${tg}</div><h3>ENERJOY ${fmt(p.watt)}W</h3>${big?`<div class="m">${p.useFor.join('. ')}.</div>`:''}
-    <div class="wh">${whRange(p)} Wh<small>${ac}</small></div>${soldText(p)?`<div class="sm">${soldText(p)}</div>`:''}${big?'<span class="go">Xem máy</span>':''}`;
+    <div class="cds">${p.variants.map(v=>`<b>${v.code}</b>`).join('')}</div><div class="wh"><small>${whRange(p)} Wh, ${ac}</small></div>${soldText(p)?`<div class="sm">${soldText(p)}</div>`:''}${big?'<span class="go">Xem máy</span>':''}`;
   const img=`<img src="${p.img}" alt="${p.name}" loading="lazy" width="1100" height="780">`;
   return big ? `<a class="tl big" href="#sp-${p.id}">${img}<div>${info}</div></a>` : `<a class="tl" href="#sp-${p.id}">${img}${info}</a>`;
 }
@@ -467,7 +471,7 @@ function home(){
       </div>
     </div>
     <div class="lineup">${P.map((p,i)=>`<a class="lu" href="#sp-${p.id}" style="--i:${i};--mm:${H[p.id]};--ar:${AR[p.id].toFixed(3)}">
-      <img src="${p.img}" alt="${p.name}" width="1100" height="${Math.round(1100/AR[p.id])}"><span class="lu-w">${fmt(p.watt)}W</span><span class="lu-wh">${whRange(p)} Wh</span></a>`).join('')}</div>
+      <img src="${p.img}" alt="${p.name}" width="1100" height="${Math.round(1100/AR[p.id])}"><span class="lu-w">${fmt(p.watt)}W</span><span class="lu-wh">${p.variants.map(v=>v.amp).filter((x,i,a)=>a.indexOf(x)===i).join(' / ')}</span></a>`).join('')}</div>
     <p class="lu-note">Sáu dòng máy xếp từ nhỏ đến lớn. Bấm vào máy để xem chi tiết, trên điện thoại vuốt ngang để xem đủ 6 máy.</p>
   </div></section>
 

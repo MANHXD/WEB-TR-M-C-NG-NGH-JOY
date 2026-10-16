@@ -31,8 +31,8 @@ window.PRODUCTS = [
     ports: ["1 đèn LED", "2 ổ AC 220V", "6 cổng USB"],
     useFor: ["Cắm trại, dã ngoại", "Quạt, đèn, wifi khi mất điện", "Sạc điện thoại, laptop"],
     variants: [
-      { code: "400-10A", amp: "10A", wh: 111, mah: 30000, size: "230 x 195 x 119 mm", kg: 1.7, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "400-20A", amp: "20A", wh: 222, mah: 60000, size: "230 x 195 x 120 mm", kg: 2.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "400W-10A", amp: "10A", wh: 111, mah: 30000, size: "230 x 195 x 119 mm", kg: 1.7, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "400W-20A", amp: "20A", wh: 222, mah: 60000, size: "230 x 195 x 120 mm", kg: 2.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
     ],
   },
   {
@@ -40,8 +40,8 @@ window.PRODUCTS = [
     ports: ["1 đèn LED", "2 ổ AC 220V", "4 cổng USB", "2 cổng Type C"],
     useFor: ["Cắm trại, dã ngoại", "Quạt, đèn, wifi khi mất điện", "Sạc nhanh qua Type C"],
     variants: [
-      { code: "500-10A", amp: "10A", wh: 111, mah: 30000, size: "260 x 142 x 162 mm", kg: 3, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "500-20A", amp: "20A", wh: 222, mah: 60000, size: "260 x 142 x 163 mm", kg: 3.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "500W-10A", amp: "10A", wh: 111, mah: 30000, size: "260 x 142 x 162 mm", kg: 3, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "500W-20A", amp: "20A", wh: 222, mah: 60000, size: "260 x 142 x 163 mm", kg: 3.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
     ],
   },
   {
@@ -49,7 +49,7 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "2 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Đi phượt, câu cá, bán hàng đêm", "Quạt, tivi nhỏ, wifi", "Có tẩu cắm thiết bị ô tô"],
     variants: [
-      { code: "600-30A", amp: "30A", wh: 333, mah: 90000, size: "260 x 192 x 196 mm", kg: 4.5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "600W-30A", amp: "30A", wh: 333, mah: 90000, size: "260 x 192 x 196 mm", kg: 4.5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
     ],
   },
   {
@@ -57,7 +57,7 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "3 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Gia đình dự phòng mất điện", "Quạt, tivi, wifi, camera", "Bán hàng lưu động"],
     variants: [
-      { code: "1100-30A", amp: "30A", wh: 333, mah: 90000, size: "190 x 300 x 190 mm", kg: 5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "1100W-30A", amp: "30A", wh: 333, mah: 90000, size: "190 x 300 x 190 mm", kg: 5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
     ],
   },
   {
@@ -65,8 +65,8 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "4 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Dự phòng cả nhà khi mất điện", "Quạt, tủ lạnh, tivi, wifi", "Cửa hàng, quầy bán nhỏ"],
     variants: [
-      { code: "1600-60A", amp: "60A", wh: 666, mah: 180000, size: "190 x 300 x 189 mm", kg: 9.5, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "1600-100A", amp: "100A", wh: 1110, mah: 300000, size: "190 x 300 x 190 mm", kg: 10, charge1: "10 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "1600W-60A", amp: "60A", wh: 666, mah: 180000, size: "190 x 300 x 189 mm", kg: 9.5, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "1600W-100A", amp: "100A", wh: 1110, mah: 300000, size: "190 x 300 x 190 mm", kg: 10, charge1: "10 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
     ],
   },
   {
@@ -74,8 +74,8 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "5 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Sóng sin chuẩn, chạy thiết bị có động cơ", "Dự phòng gia đình, văn phòng", "Công trình, sự kiện ngoài trời"],
     variants: [
-      { code: "3000-100A", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 265 mm", kg: 20, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "3000-100A sạc nhanh", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 266 mm", kg: 20, charge1: "5 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null, fast: true },
+      { code: "3000W-100A", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 265 mm", kg: 20, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "3000W-100A sạc nhanh", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 266 mm", kg: 20, charge1: "5 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null, fast: true },
     ],
   },
 ];
