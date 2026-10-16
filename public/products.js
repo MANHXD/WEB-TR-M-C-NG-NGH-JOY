@@ -29,7 +29,7 @@ window.SHOP = {
 // =====================================================
 window.PRODUCTS = [
   {
-    id: "400w", photos: ["img/thuc-te/400w-1.webp", "img/thuc-te/400w-2.webp", "img/thuc-te/400w-3.webp"], bestSeller: true, name: "Trạm sạc ENERJOY 400W", watt: 400, sold: null, img: "img/tram-sac-400W.webp",
+    id: "400w", photos: ["img/goc/400w-trai.webp", "img/goc/400w-phai.webp", "img/thuc-te/400w-1.webp", "img/thuc-te/400w-2.webp", "img/thuc-te/400w-3.webp"], bestSeller: true, name: "Trạm sạc ENERJOY 400W", watt: 400, sold: null, img: "img/tram-sac-400W.webp",
     ports: ["1 đèn LED", "2 ổ AC 220V", "6 cổng USB"],
     useFor: ["Cắm trại, dã ngoại", "Quạt, đèn, wifi khi mất điện", "Sạc điện thoại, laptop"],
     variants: [
