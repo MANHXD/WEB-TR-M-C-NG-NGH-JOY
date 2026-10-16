@@ -267,6 +267,7 @@ footer .logo{background:#FFFFFF}
 .thumbs button{flex:0 0 76px;height:58px;padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;background:var(--panel);cursor:pointer}
 .thumbs button.on{border-color:var(--accent)}
 .thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs img[src*="/goc/"]{object-fit:contain;padding:3px}
 .card{transition:border-color .2s}
 .card:hover{transform:none}
 .card .ph,.pd .ph{background:var(--night)}
@@ -365,6 +366,8 @@ a,button,.chip,.var{cursor:pointer}
 .fit{margin:14px 0 0;padding:10px 14px;border-left:4px solid #FFB81C;background:rgba(255,184,28,.12);border-radius:8px;font-weight:600}
 tr.no{background:rgba(220,38,38,.07)}tr.no th a{color:#DC2626}tr.no td span{color:#DC2626;opacity:.6;font-size:14px}
 </style>
+
+
 
 <!--seo-head-->
 <link rel="canonical" href="https://web-tr-m-c-ng-ngh-joy.vercel.app/">
@@ -612,7 +615,7 @@ function list(){
 }
 
 function gallery(p){
-  const imgs=[p.img,...(p.photos||[])], gi=Math.min(state.photo?.[p.id]||0, imgs.length-1), real=gi>0;
+  const imgs=[p.img,...(p.photos||[])], gi=Math.min(state.photo?.[p.id]||0, imgs.length-1), real=imgs[gi].includes('/thuc-te/');
   return `<div class="ph ${real?'photo':''}" style="position:relative">${badges(p)}<img class="${state.swapped===p.id?'sw':''}" src="${imgs[gi]}" alt="${p.name}${real?', ảnh thực tế':''}" width="1100" height="780"></div>
     ${imgs.length>1?`<div class="thumbs" role="group" aria-label="Ảnh sản phẩm">${imgs.map((x,i)=>`<button class="${i===gi?'on':''}" data-g="${i}" aria-label="Ảnh ${i+1}"><img src="${x}" alt="" loading="lazy"></button>`).join('')}</div>`:''}`;
 }

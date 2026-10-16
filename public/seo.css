@@ -19,6 +19,7 @@ h3{font-size:18px;margin:20px 0 6px}
 .pd{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .gal img{border-radius:10px;background:#0b0f22;aspect-ratio:4/3;object-fit:cover;width:100%}
+.gal img[src*="/goc/"]{object-fit:contain;padding:8px}
 .gal img:first-child{grid-column:1/-1;aspect-ratio:auto;object-fit:contain;padding:12px}
 .lead{color:var(--muted);font-size:17px}
 .facts{list-style:none;padding:0;margin:16px 0;display:flex;gap:10px;flex-wrap:wrap}
