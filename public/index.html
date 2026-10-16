@@ -280,6 +280,41 @@ footer{border-top:0}
 .rev figcaption span{color:var(--muted);font-size:13px}
 .stars{color:var(--amber);letter-spacing:2px}.stars span{color:var(--line)}
 a,button,.chip,.var{cursor:pointer}
+
+/* ===== hiệu ứng động: trượt khi cuộn, lướt khi rê chuột, rung nhẹ ở nút mua ===== */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.rv.rv-l{transform:translateX(-36px)}.rv.rv-r{transform:translateX(36px)}
+.rv.in{opacity:1;transform:none}
+@keyframes luIn{from{opacity:0;transform:translateY(60px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.lu{animation:luIn .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * .09s + .1s)}
+.lu img{animation:floaty 4.5s ease-in-out infinite;animation-delay:calc(var(--i) * -.7s)}
+.lu img{transition:translate .3s, scale .3s}
+.lu:hover img{animation-play-state:paused;translate:0 -10px;scale:1.05}
+@keyframes heroIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.hero h1{animation:heroIn .8s cubic-bezier(.2,.7,.2,1) both}
+.hero-copy>div{animation:heroIn .8s .15s cubic-bezier(.2,.7,.2,1) both}
+.card .ph img{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.card:hover .ph img{transform:scale(1.07) rotate(-1deg)}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 36px -18px rgba(20,27,92,.45)}
+.card{transition:border-color .2s, transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s}
+.upc{overflow:hidden}
+.upc img{transition:transform .7s cubic-bezier(.2,.7,.2,1), filter .4s}
+.upc:hover img{transform:scale(1.06);filter:saturate(1.15)}
+@keyframes slideImg{from{opacity:0;transform:translateX(40px) scale(1.03)}to{opacity:1;transform:none}}
+.pd .ph img.sw{animation:slideImg .45s cubic-bezier(.2,.7,.2,1)}
+.thumbs button{transition:transform .2s, border-color .2s}
+.thumbs button:hover{transform:translateY(-3px)}
+@keyframes shake{0%,84%,100%{transform:none}86%{transform:rotate(-3deg) scale(1.04)}88%{transform:rotate(3deg) scale(1.04)}90%{transform:rotate(-2deg)}92%{transform:rotate(2deg)}94%{transform:none}}
+.dock a.pri,.pd .btns .btn-pri,.ask .btn-pri{animation:shake 4s ease-in-out infinite}
+.btn-pri:hover{animation-play-state:paused}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,184,28,.6)}50%{box-shadow:0 0 0 7px rgba(255,184,28,0)}}
+.badge:first-child{animation:pulse 2.4s ease-out infinite}
+@keyframes fill{from{width:0}}
+.bar i{animation:fill 1.2s cubic-bezier(.2,.7,.2,1) both}
+.rev{transition:transform .3s, box-shadow .3s}
+.rev:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 14px 30px -18px rgba(20,27,92,.4)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}.rv{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -391,7 +426,7 @@ function home(){
         </div>
       </div>
     </div>
-    <div class="lineup">${P.map(p=>`<a class="lu" href="#sp-${p.id}" style="--mm:${H[p.id]};--ar:${AR[p.id].toFixed(3)}">
+    <div class="lineup">${P.map((p,i)=>`<a class="lu" href="#sp-${p.id}" style="--i:${i};--mm:${H[p.id]};--ar:${AR[p.id].toFixed(3)}">
       <img src="${p.img}" alt="${p.name}" width="1100" height="${Math.round(1100/AR[p.id])}"><span class="lu-w">${fmt(p.watt)}W</span><span class="lu-wh">${whRange(p)} Wh</span></a>`).join('')}</div>
     <p class="lu-note">Sáu dòng máy xếp cạnh nhau theo chiều cao thật, từ 119 mm đến 265 mm. Bấm vào máy để xem chi tiết, trên điện thoại vuốt ngang để xem đủ 6 máy.</p>
   </div></section>
@@ -460,7 +495,7 @@ function list(){
 
 function gallery(p){
   const imgs=[p.img,...(p.photos||[])], gi=Math.min(state.photo?.[p.id]||0, imgs.length-1), real=gi>0;
-  return `<div class="ph ${real?'photo':''}" style="position:relative">${badges(p)}<img src="${imgs[gi]}" alt="${p.name}${real?', ảnh thực tế':''}" width="1100" height="780"></div>
+  return `<div class="ph ${real?'photo':''}" style="position:relative">${badges(p)}<img class="${state.swapped===p.id?'sw':''}" src="${imgs[gi]}" alt="${p.name}${real?', ảnh thực tế':''}" width="1100" height="780"></div>
     ${imgs.length>1?`<div class="thumbs" role="group" aria-label="Ảnh sản phẩm">${imgs.map((x,i)=>`<button class="${i===gi?'on':''}" data-g="${i}" aria-label="Ảnh ${i+1}"><img src="${x}" alt="" loading="lazy"></button>`).join('')}</div>`:''}`;
 }
 function detail(p){
@@ -552,7 +587,7 @@ function contact(){
 function bind(){
   app.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{state.filter=b.dataset.f;render();});
   app.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{state.variant[cur().id]=+b.dataset.v;render(true);});
-  app.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{state.photo[cur().id]=+b.dataset.g;render(true);});
+  app.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{state.photo[cur().id]=+b.dataset.g;state.swapped=cur().id;render(true);state.swapped=null;});
   app.querySelectorAll('[data-order]').forEach(a=>a.addEventListener('click',()=>{state.order=a.dataset.order;}));
   app.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const i=b.dataset.q;state.qty[i]=Math.max(0,(state.qty[i]||0)+ +b.dataset.d);
     const c=$('#calc'); const p=cur(); const html=calc(p, p&&p.variants[state.variant[p.id]??0]);
@@ -592,7 +627,16 @@ function render(keepScroll){
   else { app.innerHTML = home(); document.title='ENERJOY Trạm Sạc'; if(h==='tinh-gio'){ requestAnimationFrame(()=>$('#tinh-gio').scrollIntoView()); keepScroll=true; } }
   document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===page));
   bind();
-  if(!keepScroll) window.scrollTo(0,0);
+  if(!keepScroll){ window.scrollTo(0,0); reveal(); }
+}
+function reveal(){
+  if(!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }),{rootMargin:'0px 0px -8% 0px'});
+  const groups=['.why>div','.uses-ph>.upc','.grid>.card','.revs>.rev','.faq details','.blk-head','.calc','.ask .wrap>*','.pd>*'];
+  groups.forEach(sel=>app.querySelectorAll(sel).forEach((el,i)=>{
+    el.classList.add('rv'); if(sel==='.pd>*') el.classList.add(i?'rv-r':'rv-l');
+    el.style.setProperty('--d',(i%3)*0.08+'s'); io.observe(el);
+  }));
 }
 addEventListener('hashchange',()=>render());
 render();
