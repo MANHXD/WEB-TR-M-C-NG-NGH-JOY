@@ -307,6 +307,8 @@ a,button,.chip,.var{cursor:pointer}
 .tl .sm{font-size:13px;color:#FFC23D;font-weight:600}
 .tl.big{grid-column:span 2;grid-template-columns:1fr 1.25fr;align-items:center;gap:20px;padding:26px}
 .tl.big img{order:2}
+.tl.wide{grid-column:1/-1;grid-template-columns:1fr 1.5fr}
+.tl.wide img{max-height:360px;object-fit:cover}
 .tl.big h3{font-size:clamp(24px,3vw,32px);letter-spacing:-.03em;line-height:1.1}
 .tl.big .wh{font-size:28px;margin-bottom:6px}
 @media (max-width:560px){.tl.big{grid-template-columns:1fr;padding:20px}.tl.big img{order:0}.tl{padding:14px}.tl h3{font-size:16px}.tl .wh{font-size:17px}}
@@ -379,7 +381,7 @@ a,button,.chip,.var{cursor:pointer}
 <script src="products.js"></script>
 <script>
 (function(){
-const S = window.SHOP, P = window.PRODUCTS, D = window.DEVICES;
+const S = window.SHOP, P = window.PRODUCTS, D = window.DEVICES, SO = window.SOLAR || [], ALL = P.concat(SO);
 const $ = (s, el=document) => el.querySelector(s);
 const app = $('#app');
 const fmt = n => n.toLocaleString('vi-VN');
@@ -426,6 +428,18 @@ function tile(p,big){
     <div class="cds">${p.variants.map(v=>`<b>${v.code}</b>`).join('')}</div><div class="wh"><small>${whRange(p)} Wh, ${ac}</small></div>${soldText(p)?`<div class="sm">${soldText(p)}</div>`:''}${big?'<span class="go">Xem máy</span>':''}`;
   const img=`<img src="${p.img}" alt="${p.name}" loading="lazy" width="1100" height="780">`;
   return big ? `<a class="tl big" href="#sp-${p.id}">${img}<div>${info}</div></a>` : `<a class="tl" href="#sp-${p.id}">${img}${info}</a>`;
+}
+function solarTile(p){
+  const img=`<img src="${p.img}" alt="${p.name}" loading="lazy" width="1400" height="933" style="border-radius:12px">`;
+  return `<a class="tl big wide" href="#sp-${p.id}">${img}<div><div class="tg"><span class="o">Mới</span></div><h3>${p.name}</h3><div class="m">${p.useFor.join('. ')}.</div>
+    <div class="cds">${p.variants.map(v=>`<b>${v.w}W</b>`).join('')}</div><div class="wh"><small>Pin MONO hiệu suất ${p.variants.map(v=>v.eff).join(' đến ')}</small></div><span class="go">Xem tấm pin</span></div></a>`;
+}
+function solarBlock(){
+  if(!SO.length) return '';
+  return `<section class="blk" style="padding-top:0"><div class="wrap">
+    <div class="blk-head"><h2>Tấm pin năng lượng mặt trời</h2></div>
+    <div class="bento">${SO.map(solarTile).join('')}</div>
+  </div></section>`;
 }
 function bento(){
   const top=P.filter(p=>p.bestSeller).sort((a,b)=>b.watt-a.watt), rest=P.filter(p=>!p.bestSeller);
@@ -500,6 +514,7 @@ function home(){
     <div class="blk-head"><h2>Chọn theo công suất</h2><a class="btn btn-sm btn-ghost" href="#san-pham">Xem tất cả</a></div>
     ${bento()}
   </div></section>
+  ${solarBlock()}
 
   <section class="blk" id="tinh-gio-wrap" style="padding-top:0"><div class="wrap">
     <div class="blk-head"><h2 id="tinh-gio">Máy nào đủ cho nhà mình?</h2></div>
@@ -534,7 +549,7 @@ function list(){
       <div class="filters" role="group" aria-label="Lọc theo công suất">${groups.map(([k,t])=>`<button class="chip ${state.filter===k?'on':''}" data-f="${k}">${t}</button>`).join('')}</div>
     </div>
     <div class="bento list">${P.filter(pass).map(p=>tile(p)).join('')}</div>
-  </div></section>`;
+  </div></section>${solarBlock()}`;
 }
 
 function gallery(p){
@@ -542,7 +557,31 @@ function gallery(p){
   return `<div class="ph ${real?'photo':''}" style="position:relative">${badges(p)}<img class="${state.swapped===p.id?'sw':''}" src="${imgs[gi]}" alt="${p.name}${real?', ảnh thực tế':''}" width="1100" height="780"></div>
     ${imgs.length>1?`<div class="thumbs" role="group" aria-label="Ảnh sản phẩm">${imgs.map((x,i)=>`<button class="${i===gi?'on':''}" data-g="${i}" aria-label="Ảnh ${i+1}"><img src="${x}" alt="" loading="lazy"></button>`).join('')}</div>`:''}`;
 }
+function solarDetail(p){
+  const vi = state.variant[p.id] ?? 0, v = p.variants[vi];
+  const rows = [['Mã sản phẩm', v.code], ['Điện áp', v.volt], ['Số cell pin', v.cells], ['Hiệu suất', v.eff], ['Kích thước', v.size], ['Trọng lượng', String(v.kg).replace('.',',')+' kg'], ...v.specs.slice(1)];
+  return `<div class="wrap">
+    <div class="crumb"><a href="#san-pham">Sản phẩm</a> / ${p.name}</div>
+    <div class="pd">
+      <div>${gallery(p)}</div>
+      <div>
+        <h1>${p.name}</h1>
+        <p class="lead">${p.useFor.join('. ')}.</p>
+        <div class="lbl">Chọn công suất</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${x.volt}, ${String(x.kg).replace('.',',')} kg</small></button>`).join('')}</div>
+        <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
+        <ul class="pol">${S.policies.map(x=>`<li><b>${x.title}.</b> ${x.text}</li>`).join('')}</ul>
+        <div class="btns">
+          <a class="btn btn-pri" href="#lien-he" data-order="${v.code}">Đặt mua ${v.code}</a>
+          <a class="btn btn-ghost" href="https://zalo.me/${S.zalo}" target="_blank" rel="noopener">Hỏi qua Zalo</a>
+        </div>
+      </div>
+    </div>
+    <section style="padding-bottom:56px"><h2 style="font-size:24px;margin-bottom:14px">Thông số kỹ thuật</h2>
+      <div class="tbl-wrap"><table><tbody>${rows.map(([a,b])=>`<tr><th>${a}</th><td>${b}</td></tr>`).join('')}</tbody></table></div></section>
+  </div>`;
+}
 function detail(p){
+  if(p.solar) return solarDetail(p);
   const vi = state.variant[p.id] ?? 0, v = p.variants[vi];
   const rows = [
     ['Mã sản phẩm', v.code], ['Công suất', fmt(p.watt)+'W' + (p.sine?' (sóng sin chuẩn)':'')], ['Dòng pin', v.amp],
@@ -602,7 +641,7 @@ function calc(p, v){
 }
 
 function contact(){
-  const opts = P.flatMap(p=>p.variants.map(v=>`<option ${state.order===v.code?'selected':''}>${v.code}</option>`)).join('');
+  const opts = ALL.flatMap(p=>p.variants.map(v=>`<option ${state.order===v.code?'selected':''}>${v.code}</option>`)).join('');
   const link = (href,label,val) => href? `<a href="${href}" target="_blank" rel="noopener"><strong>${label}</strong><span>${val}</span></a>` : `<div><strong>${label}</strong><span class="todo">Chưa có link</span></div>`;
   return `<section class="blk"><div class="wrap">
     <div class="blk-head"><h2>Đặt hàng, tư vấn chọn máy</h2></div>
@@ -659,7 +698,7 @@ function bind(){
   };
 }
 
-function cur(){ const h=location.hash.slice(1); return h.startsWith('sp-') ? P.find(p=>p.id===h.slice(3)) : null; }
+function cur(){ const h=location.hash.slice(1); return h.startsWith('sp-') ? ALL.find(p=>p.id===h.slice(3)) : null; }
 
 function render(keepScroll){
   const h = location.hash.slice(1) || 'trang-chu';
