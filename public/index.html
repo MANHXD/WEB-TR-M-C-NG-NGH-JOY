@@ -433,7 +433,7 @@ function tile(p,big){
 function solarTile(p){
   const img=`<img src="${p.img}" alt="${p.name}" loading="lazy" width="1400" height="933" style="border-radius:12px">`;
   return `<a class="tl big wide" href="#sp-${p.id}">${img}<div><div class="tg"><span class="o">Mới</span></div><h3>${p.name}</h3><div class="m">${p.useFor.join('. ')}.</div>
-    <div class="cds">${p.variants.map(v=>`<b>${v.w}W</b>`).join('')}</div><div class="wh"><small>Pin MONO hiệu suất ${p.variants.map(v=>v.eff).join(' đến ')}</small></div><span class="go">Xem tấm pin</span></div></a>`;
+    <div class="cds">${[...new Set(p.variants.map(v=>v.w))].map(w=>`<b>${w}W</b>`).join('')}${p.variants.some(v=>v.qty)?'<b>Combo 2 tấm</b>':''}</div><div class="wh"><small>Pin MONO hiệu suất ${p.variants.map(v=>v.eff).join(' đến ')}</small></div><span class="go">Xem tấm pin</span></div></a>`;
 }
 function solarBlock(){
   if(!SO.length) return '';
@@ -560,7 +560,7 @@ function gallery(p){
 }
 function solarDetail(p){
   const vi = state.variant[p.id] ?? 0, v = p.variants[vi];
-  const rows = [['Mã sản phẩm', v.code], ['Điện áp', v.volt], ['Số cell pin', v.cells], ['Hiệu suất', v.eff], ['Kích thước', v.size], ['Trọng lượng', String(v.kg).replace('.',',')+' kg'], ...(v.fits?[['Dùng cho trạm sạc', v.fits.map(f=>'ENERJOY '+f.w+'W'+(f.max?' (tối đa '+f.max+' tấm)':'')).join(', ')]]:[]), ...v.specs.slice(1)];
+  const rows = [['Mã sản phẩm', v.code], ...(v.qty?[['Số lượng', v.qty+' tấm (thông số bên dưới tính cho 1 tấm)']]:[]), ['Điện áp', v.volt], ['Số cell pin', v.cells], ['Hiệu suất', v.eff], ['Kích thước', v.size], ['Trọng lượng', String(v.kg).replace('.',',')+' kg'], ...(v.fits?[['Dùng cho trạm sạc', v.fits.map(f=>'ENERJOY '+f.w+'W'+(f.max?' (tối đa '+f.max+' tấm)':'')).join(', ')]]:[]), ...v.specs.slice(1)];
   return `<div class="wrap">
     <div class="crumb"><a href="#san-pham">Sản phẩm</a> / ${p.name}</div>
     <div class="pd">
@@ -568,7 +568,7 @@ function solarDetail(p){
       <div>
         <h1>${p.name}</h1>
         <p class="lead">${p.useFor.join('. ')}.</p>
-        <div class="lbl">Chọn công suất</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${x.volt}, ${String(x.kg).replace('.',',')} kg</small></button>`).join('')}</div>
+        <div class="lbl">Chọn phân loại</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${x.qty?x.qty+' tấm, ':''}${x.volt}, ${String(x.kg).replace('.',',')} kg${x.qty?' mỗi tấm':''}</small></button>`).join('')}</div>
         ${v.fit?`<p class="fit">${v.fit}.</p>`:''}
         <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
         <ul class="pol">${S.policies.map(x=>`<li><b>${x.title}.</b> ${x.text}</li>`).join('')}</ul>
