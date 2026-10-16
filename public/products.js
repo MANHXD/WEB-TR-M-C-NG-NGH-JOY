@@ -97,6 +97,7 @@ window.REVIEWS = [
 // Thiết bị có "per" thì tính theo số lần (MẠNH 2026-10-16): per = Wh pin mất mỗi lần (đã tính hao hụt), unit = tên lần.
 // Laptop: perMin..per cho ra khoảng số lần (máy 10A 111Wh: 2-3 lần), mỗi lần đầy pin dùng thêm khoảng hoursEach giờ (MẠNH 2026-10-16).
 // Nồi cơm 111Wh/lần khớp số MẠNH đưa: 1100W-30A 3 lần, 1600W-60A 6 lần, 1600W-100A 10 lần.
+// hoursBy: số giờ thực tế MẠNH đo theo từng mã (tủ lạnh chạy ngắt quãng). Mã chưa có số thì ước theo avgW (W trung bình, suy từ số đo).
 // minW: máy phải từ công suất này trở lên mới dùng được (nồi cơm: 1100W, 1600W, 3000W).
 window.DEVICES = [
   { name: "Đèn LED", w: 10 },
@@ -105,7 +106,7 @@ window.DEVICES = [
   { name: "Camera", w: 6 },
   { name: "Quạt cây", w: 45 },
   { name: "Laptop", w: 65, per: 55, perMin: 37, unit: "lần sạc đầy", hoursEach: 3 },
-  { name: "Tủ lạnh nhỏ", w: 120 },
+  { name: "Tủ lạnh", w: 120, hoursBy: { "600W-30A": 6, "1100W-30A": 8, "1600W-60A": 12, "1600W-100A": 24 }, avgW: 50 },
   { name: "Nồi cơm điện", w: 600, per: 111, unit: "lần nấu", minW: 1100 },
 ];
 

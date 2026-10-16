@@ -640,8 +640,8 @@ function detail(p){
 function calc(p, v){
   const qty = state.qty;
   const total = D.reduce((s,d,i)=>s+(qty[i]||0)*d.w,0);
-  const cont = D.reduce((s,d,i)=>s+(d.per?0:(qty[i]||0)*d.w),0);
-  const cnt = D.map((d,i)=>({d,n:qty[i]||0})).filter(x=>x.d.per&&x.n);
+  const cont = D.reduce((s,d,i)=>s+(d.per||d.hoursBy?0:(qty[i]||0)*d.w),0);
+  const cnt = D.map((d,i)=>({d,n:qty[i]||0})).filter(x=>(x.d.per||x.d.hoursBy)&&x.n);
   const devs = D.map((d,i)=>`<div class="dev"><div>${d.name}<div class="w">${d.w}W${d.per?`, tính theo số ${d.unit.replace(' đầy','')}`:''}</div></div>
     <div class="qty"><button data-q="${i}" data-d="-1" aria-label="Bớt ${d.name}">−</button><output>${qty[i]||0}</output><button data-q="${i}" data-d="1" aria-label="Thêm ${d.name}">+</button></div></div>`).join('');
   const hrs = h => h>=1? h.toFixed(1).replace('.',',')+' giờ' : Math.round(h*60)+' phút';
@@ -649,21 +649,22 @@ function calc(p, v){
     if(t2<1) return `chưa đủ 1 ${x.d.unit}`;
     const n = t2>t? `${Math.max(t,1)}-${t2}` : `${t}`, hr = x.d.hoursEach? `, dùng thêm khoảng ${t2>t?`${Math.max(t,1)*x.d.hoursEach}-${t2*x.d.hoursEach}`:t*x.d.hoursEach} giờ` : '';
     return `${n} ${x.d.unit}${hr}`; };
-  const lines = (wh) => [...(cont?[(cnt.length?'Thiết bị khác: ':'')+hrs(wh*0.85/cont)]:[]), ...cnt.map(x=>`${x.d.name}${x.n>1?` (${x.n} cái, mỗi cái)`:''}: ${times(wh,x)}`)];
+  const fridge = (vv,x) => { const h = x.d.hoursBy[vv.code]; return 'khoảng '+hrs(h? h/x.n : vv.wh*0.85/(x.d.avgW*x.n)).replace(',0 ',' '); };
+  const lines = (vv) => { const wh = vv.wh; return [...(cont?[(cnt.length?'Thiết bị khác: ':'')+hrs(wh*0.85/cont)]:[]), ...cnt.map(x=>`${x.d.name}${x.n>1?` (${x.n} cái${x.d.hoursBy?'':', mỗi cái'})`:''}: ${x.d.hoursBy? fridge(vv,x) : times(wh,x)}`)]; };
   const okFor = pp => pp.watt>=total*1.2 && D.every((d,i)=>!(qty[i]&&d.minW&&pp.watt<d.minW));
-  const cntNote = cnt.length? ' Laptop và nồi cơm tính theo số lần, mỗi loại tính như khi dùng cả pin cho riêng nó.' : '';
+  const cntNote = cnt.length? ' Laptop, nồi cơm, tủ lạnh tính riêng từng loại, như khi dùng cả pin cho riêng nó. Tủ lạnh theo số giờ shop đo thực tế.' : '';
   // Câu ví dụ cho laptop, lời của MẠNH (2026-10-16).
   const ex = cnt.some(x=>x.d.hoursEach)? `<div class="ex">Ví dụ: laptop 65W, máy 10A sạc được tầm 2-3 lần. Sạc đầy pin laptop sử dụng được thêm 3 giờ thì tổng sẽ là 6-9 giờ.<br><small style="color:var(--muted)">Lưu ý: thời gian thực tế còn tuỳ tình trạng pin laptop của mỗi người.</small></div>` : '';
   let res;
   if(!total){ res = `<div class="note">Bấm + để thêm thiết bị nhà bạn hay dùng khi mất điện.</div>`; }
   else if(p){
-    const L = lines(v.wh);
+    const L = lines(v);
     res = `<div><div class="big"${cont?'':' style="font-size:22px"'}>${L[0]}</div>${L.slice(1).map(x=>`<div class="big" style="font-size:22px;margin-top:6px">${x}</div>`).join('')}<div class="note" style="flex-basis:auto">${v.code}, tổng tải ${fmt(total)}W</div></div>
       ${D.some((d,i)=>qty[i]&&d.minW&&p.watt<d.minW)?`<div class="over">Máy ${fmt(p.watt)}W không đủ công suất cho ${D.filter((d,i)=>qty[i]&&d.minW&&p.watt<d.minW).map(d=>d.name.toLowerCase()).join(', ')}. Cần máy từ ${fmt(Math.max(...D.filter((d,i)=>qty[i]&&d.minW).map(d=>d.minW)))}W trở lên.</div>`:total>p.watt?`<div class="over">Tổng tải vượt ${fmt(p.watt)}W, nên chọn máy lớn hơn.</div>`:''}
-      ${ex}<div class="note">Ước tính theo dung lượng thực tế x 85% hiệu suất. Tủ lạnh chạy ngắt quãng nên thực tế lâu hơn.${cntNote}</div>`;
+      ${ex}<div class="note">Ước tính theo dung lượng thực tế x 85% hiệu suất.${cntNote}</div>`;
   } else {
     const all = P.flatMap(pp=>pp.variants.map(vv=>({p:pp,v:vv,ok:okFor(pp)}))), fit = all.filter(x=>x.ok);
-    res = fit.length? `<div style="flex-basis:100%"><div class="tbl-wrap"><table><thead><tr><th>Máy</th><td style="color:var(--muted)">Dùng được khoảng</td></tr></thead><tbody>${all.map(x=>x.ok?`<tr><th><a href="#sp-${x.p.id}">${x.v.code}</a></th><td class="num">${lines(x.v.wh).join('<br>')}</td></tr>`:`<tr class="no"><th><a href="#sp-${x.p.id}">${x.v.code}</a></th><td><span>Không đủ công suất</span></td></tr>`).join('')}</tbody></table></div></div>
+    res = fit.length? `<div style="flex-basis:100%"><div class="tbl-wrap"><table><thead><tr><th>Máy</th><td style="color:var(--muted)">Dùng được khoảng</td></tr></thead><tbody>${all.map(x=>x.ok?`<tr><th><a href="#sp-${x.p.id}">${x.v.code}</a></th><td class="num">${lines(x.v).join('<br>')}</td></tr>`:`<tr class="no"><th><a href="#sp-${x.p.id}">${x.v.code}</a></th><td><span>Không đủ công suất</span></td></tr>`).join('')}</tbody></table></div></div>
       ${ex}<div class="note">Tổng tải ${fmt(total)}W. Máy cần dư công suất ít nhất 20%, nồi cơm cần máy từ 1100W trở lên. Ước tính theo Wh thực tế x 85%.${cntNote}</div>`
       : `<div class="over">Tổng tải ${fmt(total)}W vượt các dòng máy hiện có.</div>`;
   }
