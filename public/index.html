@@ -285,6 +285,29 @@ footer{border-top:0}
 .stars{color:var(--amber);letter-spacing:2px}.stars span{color:var(--line)}
 a,button,.chip,.var{cursor:pointer}
 
+/* ===== thẻ máy kiểu "nổi bật máy bán chạy" (user chọn mẫu 3, 2026-10-16) ===== */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.bento.list{grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px){.bento,.bento.list{grid-template-columns:1fr 1fr}}
+.tl{border-radius:20px;overflow:hidden;background:radial-gradient(70% 60% at 70% 40%,rgba(79,182,255,.16),transparent 70%),linear-gradient(160deg,#18205E,#070A1C 75%);border:1px solid rgba(141,155,255,.2);padding:18px;display:grid;gap:8px;align-content:start;text-decoration:none;color:#F2F5FF;transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s}
+.tl:hover{transform:translateY(-6px);border-color:rgba(255,194,61,.55);box-shadow:0 22px 40px -22px rgba(47,168,255,.55)}
+.tl img{width:100%;height:auto;filter:drop-shadow(0 18px 22px rgba(0,0,0,.6));transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.tl:hover img{transform:scale(1.05) rotate(-1deg)}
+.tl .tg{display:flex;gap:6px;min-height:24px}
+.tl .tg span{font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--amber);color:var(--amber-ink)}
+.tl .tg span.o{background:transparent;color:#4FB6FF;border:1px solid rgba(79,182,255,.5)}
+.tl h3{margin:4px 0 0;font-size:18px;color:#FFFFFF}
+.tl .wh{font-weight:800;font-size:20px;color:#FFFFFF;font-variant-numeric:tabular-nums}
+.tl .wh small{display:block;font-size:12px;font-weight:500;color:#AEB9D6}
+.tl .m{color:#AEB9D6;font-size:14px;margin:6px 0 10px}
+.tl .go{display:inline-flex;align-self:start;justify-self:start;margin-top:6px;font-weight:700;font-size:15px;padding:11px 18px;border-radius:10px;background:var(--amber);color:var(--amber-ink)}
+.tl .sm{font-size:13px;color:#FFC23D;font-weight:600}
+.tl.big{grid-column:span 2;grid-template-columns:1fr 1.25fr;align-items:center;gap:20px;padding:26px}
+.tl.big img{order:2}
+.tl.big h3{font-size:clamp(24px,3vw,32px);letter-spacing:-.03em;line-height:1.1}
+.tl.big .wh{font-size:28px;margin-bottom:6px}
+@media (max-width:560px){.tl.big{grid-template-columns:1fr;padding:20px}.tl.big img{order:0}.tl{padding:14px}.tl h3{font-size:16px}.tl .wh{font-size:17px}}
+
 /* ===== hiệu ứng động: trượt khi cuộn, lướt khi rê chuột, rung nhẹ ở nút mua ===== */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
 .rv.rv-l{transform:translateX(-36px)}.rv.rv-r{transform:translateX(36px)}
@@ -392,6 +415,18 @@ function reviews(){
       <figcaption><div><b>${r.name}</b>${r.place?', '+r.place:''}</div><span>Mua máy ${r.product}${r.source?', đánh giá trên '+r.source:''}${r.date?', '+r.date:''}</span></figcaption></figure>`).join('')}</div>
   </div></section>`;
 }
+function tile(p,big){
+  const tg=[p.bestSeller&&'<span>Bán chạy</span>',p.sine&&'<span class="o">Sin chuẩn</span>'].filter(Boolean).join('');
+  const ac=(p.ports.find(x=>/AC/.test(x))||'').replace(/ổ AC/,'ổ AC');
+  const info=`<div class="tg">${tg}</div><h3>ENERJOY ${fmt(p.watt)}W</h3>${big?`<div class="m">${p.useFor.join('. ')}.</div>`:''}
+    <div class="wh">${whRange(p)} Wh<small>${ac}</small></div>${soldText(p)?`<div class="sm">${soldText(p)}</div>`:''}${big?'<span class="go">Xem máy</span>':''}`;
+  const img=`<img src="${p.img}" alt="${p.name}" loading="lazy" width="1100" height="780">`;
+  return big ? `<a class="tl big" href="#sp-${p.id}">${img}<div>${info}</div></a>` : `<a class="tl" href="#sp-${p.id}">${img}${info}</a>`;
+}
+function bento(){
+  const top=P.filter(p=>p.bestSeller).sort((a,b)=>b.watt-a.watt), rest=P.filter(p=>!p.bestSeller);
+  return `<div class="bento">${top.map(p=>tile(p,true)).join('')}${rest.map(p=>tile(p)).join('')}</div>`;
+}
 function card(p){
   const v0 = p.variants[0];
   return `<a class="card" href="#sp-${p.id}">
@@ -459,7 +494,7 @@ function home(){
 
   <section class="blk" style="padding-top:0"><div class="wrap">
     <div class="blk-head"><h2>Chọn theo công suất</h2><a class="btn btn-sm btn-ghost" href="#san-pham">Xem tất cả</a></div>
-    <div class="grid">${P.map(card).join('')}</div>
+    ${bento()}
   </div></section>
 
   <section class="blk" id="tinh-gio-wrap" style="padding-top:0"><div class="wrap">
@@ -494,7 +529,7 @@ function list(){
     <div class="blk-head"><h2>Trạm sạc di động ENERJOY</h2>
       <div class="filters" role="group" aria-label="Lọc theo công suất">${groups.map(([k,t])=>`<button class="chip ${state.filter===k?'on':''}" data-f="${k}">${t}</button>`).join('')}</div>
     </div>
-    <div class="grid">${P.filter(pass).map(card).join('')}</div>
+    <div class="bento list">${P.filter(pass).map(p=>tile(p)).join('')}</div>
   </div></section>`;
 }
 
@@ -637,7 +672,7 @@ function render(keepScroll){
 function reveal(){
   if(!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }),{rootMargin:'0px 0px -8% 0px'});
-  const groups=['.why>div','.uses-ph>.upc','.grid>.card','.revs>.rev','.faq details','.blk-head','.calc','.ask .wrap>*','.pd>*'];
+  const groups=['.why>div','.uses-ph>.upc','.grid>.card','.bento>.tl','.revs>.rev','.faq details','.blk-head','.calc','.ask .wrap>*','.pd>*'];
   groups.forEach(sel=>app.querySelectorAll(sel).forEach((el,i)=>{
     el.classList.add('rv'); if(sel==='.pd>*') el.classList.add(i?'rv-r':'rv-l');
     el.style.setProperty('--d',(i%3)*0.08+'s'); io.observe(el);
