@@ -6,8 +6,8 @@ window.SHOP = {
   slogan: "Trạm sạc di động, có điện mọi lúc",
   phone: "0926372001",
   zalo: "0926372001",           // đang dùng chung số hotline
-  messenger: "https://m.me/61594160956476",   // Messenger của fanpage (theo id trang)
-  facebook: "https://www.facebook.com/profile.php?id=61594160956476",
+  messenger: "https://m.me/tramcongngheJoyy",   // Messenger của fanpage
+  facebook: "https://www.facebook.com/tramcongngheJoyy/",
   gaId: "G-L777L77624",         // mã Google Analytics 4 (dạng G-XXXXXXXXXX). Để trống thì không đo.
   shopee: "https://s.shopee.vn/30omLlFXi1",
   tiktok: "https://vt.tiktok.com/ZS9Ur7LqbBabW-39Li8/",
