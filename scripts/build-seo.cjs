@@ -95,19 +95,38 @@ function usage(p, v) {
   return out;
 }
 
+// Hỏi đáp: hiện trên trang và khai báo FAQPage để Google, AI đọc được. Chỉ dùng số có trong products.js.
+function faqHtml(qa) { return `<section class="faq">\n  <h2>Câu hỏi thường gặp</h2>\n  ${qa.map(([q, a]) => `<details open><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n  ')}\n</section>`; }
+function faqLd(qa) { return { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: qa.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }; }
+const POL = 'Máy bảo hành chính hãng 5 năm. Trong 7 - 15 ngày đầu, nếu lỗi từ nhà sản xuất thì shop đổi máy mới, 1 đổi 1. Miễn phí giao hàng toàn quốc, được mở hộp kiểm tra trước khi trả tiền.';
+function productFaq(p, solar) {
+  const V = p.variants, rc = D.find(d => d.minW), n = `trạm sạc dự phòng 220V ENERJOY ${p.watt}W`;
+  const qa = [
+    [`Trạm sạc ${p.watt}W chạy được thiết bị gì?`, `ENERJOY ${p.watt}W có ${p.ports.join(', ')}. Dùng tốt cho: ${p.useFor.join(', ').toLowerCase()}. Tổng công suất các thiết bị cắm cùng lúc nên dưới ${fmt(Math.floor(p.watt * 0.8))}W (chừa dư 20%). ${usage(p, V[V.length - 1]).slice(0, 2).join('. ')}.`],
+  ];
+  if (rc) qa.push([`Trạm sạc ${p.watt}W có nấu được nồi cơm điện không?`, p.watt >= rc.minW ? `Được. ${V.map(v => `Bản ${v.code} (${fmt(v.wh)} Wh) nấu được khoảng ${Math.floor(v.wh / rc.per + 1e-9)} lần với nồi cơm ${rc.w}W`).join('; ')}.` : `Không. Nồi cơm điện cần máy từ ${fmt(rc.minW)}W trở lên. Máy ${p.watt}W hợp với quạt, đèn, wifi, sạc điện thoại, laptop.`]);
+  qa.push([`Dung lượng thực tế của ENERJOY ${p.watt}W là bao nhiêu?`, V.map(v => `${v.code}: ${fmt(v.wh)} Wh (${fmt(v.mah)} mAh)`).join('; ') + '. Shop ghi Wh thực tế, không dùng số mAh quảng cáo.']);
+  qa.push([`Sạc đầy ENERJOY ${p.watt}W mất bao lâu?`, V.map(v => `${v.code}: ${v.charge1}${v.charge2 ? `, cắm 2 củ sạc còn ${v.charge2}` : ''}`).join('; ') + '.']);
+  qa.push([`ENERJOY ${p.watt}W là sóng sin chuẩn hay sin mô phỏng?`, p.sine ? `Sóng sin chuẩn, giống điện lưới, chạy được thiết bị có động cơ và thiết bị nhạy điện.` : `Trong các dòng ENERJOY, sóng sin chuẩn có ở máy 3000W. Nếu cần chạy thiết bị có động cơ hoặc thiết bị nhạy điện, nên chọn ENERJOY 3000W.`]);
+  if (solar.length) qa.push([`ENERJOY ${p.watt}W sạc bằng pin năng lượng mặt trời được không?`, `Được. Dùng ${solar.map(({ x, f }) => `tấm ${x.code}${f.max ? `, tối đa ${f.max} tấm` : ''}`).join('; ')}.`]);
+  qa.push([`Mua ${n} ở đâu, bảo hành thế nào?`, `Đặt trên www.enerjoy.vn, gọi hoặc Zalo ${S.phone}, hoặc mua ở shop Đức Trạm Sạc trên Shopee, TikTok. ${POL}`]);
+  return qa;
+}
+
 // ---------- trang trạm sạc ----------
 function productPage(p) {
   const V = p.variants, whs = [...new Set(V.map(v => v.wh))];
   const whText = whs.map(w => fmt(w)).join(' và ') + ' Wh';
   const ac = (p.ports.find(x => /AC/.test(x)) || '').toLowerCase();
-  const title = `Trạm sạc dự phòng ENERJOY ${p.watt}W, ${whs.length > 1 ? fmt(whs[0]) + '-' + fmt(whs[whs.length - 1]) : fmt(whs[0])}Wh | ${SHOP_NAME}`;
-  const desc = `Trạm sạc ENERJOY ${p.watt}W${p.sine ? ' sóng sin chuẩn' : ''}, dung lượng thực tế ${whText}, ${p.ports.slice(1).join(', ').toLowerCase()}. Bảo hành 5 năm, miễn phí giao hàng, kiểm tra trước khi trả tiền.`;
+  const title = `Trạm sạc dự phòng 220V ENERJOY ${p.watt}W, ${whs.length > 1 ? fmt(whs[0]) + '-' + fmt(whs[whs.length - 1]) : fmt(whs[0])}Wh | ${SHOP_NAME}`;
+  const desc = `Trạm sạc di động 220V ENERJOY ${p.watt}W${p.sine ? ' sóng sin chuẩn' : ''}, tích điện dự phòng mất điện, cắm trại. Dung lượng thực tế ${whText}, ${p.ports.slice(1).join(', ').toLowerCase()}. Bảo hành 5 năm, miễn phí giao hàng, kiểm tra trước khi trả tiền.`;
   const solar = SO.flatMap(s => s.variants.filter(x => (x.fits || []).some(f => f.w === p.watt)).map(x => ({ s, x, f: x.fits.find(f => f.w === p.watt) })));
+  const qa = productFaq(p, solar);
   const body = `
 <article class="pd">
   ${gallery(p)}
   <div class="info">
-    <h1>Trạm sạc dự phòng ENERJOY ${p.watt}W</h1>
+    <h1>Trạm sạc dự phòng 220V ENERJOY ${p.watt}W</h1>
     <p class="lead">${esc(p.useFor.join('. '))}.</p>
     <ul class="facts">
       <li><b>${p.watt}W</b><span>công suất${p.sine ? ', sóng sin chuẩn' : ''}</span></li>
@@ -147,8 +166,10 @@ function productPage(p) {
 <section>
   <h2>Các dòng máy khác</h2>
   <ul class="others">${P.filter(x => x !== p).map(x => `<li><a href="${prodUrl(x)}">ENERJOY ${x.watt}W</a></li>`).join('')}</ul>
-</section>`;
-  const jsonld = [breadcrumb([['Trang chủ', '/'], [p.name, prodUrl(p)]])];
+</section>
+
+${faqHtml(qa)}`;
+  const jsonld = [breadcrumb([['Trang chủ', '/'], [p.name, prodUrl(p)]]), faqLd(qa)];
   if (V.some(v => v.price)) jsonld.push(productLd(p, desc));
   return page({ url: prodUrl(p), title, desc, img: p.img, h1: p.name, body, jsonld });
 }
@@ -159,6 +180,11 @@ function solarPage(p) {
   const title = `Tấm pin năng lượng mặt trời MONO 100W, 200W cho trạm sạc | ${SHOP_NAME}`;
   const desc = `Tấm pin năng lượng mặt trời MONO 100W, 200W và combo 2 tấm, hiệu suất cell đến 24,6%, hộp đấu nối IP67. Dùng nạp điện cho trạm sạc ENERJOY 400W đến 3000W.`;
   const singles = V.filter(v => !v.qty);
+  const qa = [
+    ['Tấm pin năng lượng mặt trời nào hợp với trạm sạc ENERJOY?', singles.map(v => `${v.code}: ${v.fit}`).join('. ') + '.'],
+    ['Có combo 2 tấm pin không?', `Có. ${V.filter(v => v.qty).map(v => v.code).join(', ')}, gồm 2 tấm cùng loại, thông số như tấm lẻ.`],
+    ['Mua tấm pin ở đâu, bảo hành thế nào?', `Đặt trên www.enerjoy.vn, gọi hoặc Zalo ${S.phone}. Miễn phí giao hàng toàn quốc, được kiểm tra trước khi trả tiền.`],
+  ];
   const body = `
 <article class="pd">
   ${gallery(p)}
@@ -189,8 +215,10 @@ function solarPage(p) {
     </tbody>
   </table></div>
   <p class="muted">Combo 2 tấm gồm 2 tấm cùng loại, thông số như tấm lẻ.</p>
-</section>`;
-  return page({ url: prodUrl(p), title, desc, img: p.img, h1: p.name, body, jsonld: [breadcrumb([['Trang chủ', '/'], [p.name, prodUrl(p)]])] });
+</section>
+
+${faqHtml(qa)}`;
+  return page({ url: prodUrl(p), title, desc, img: p.img, h1: p.name, body, jsonld: [breadcrumb([['Trang chủ', '/'], [p.name, prodUrl(p)]]), faqLd(qa)] });
 }
 
 // ---------- bài viết ----------
@@ -237,10 +265,32 @@ write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 ${urls.map(u => `  <url><loc>${BASE}${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
 </urlset>
 `);
-write('robots.txt', `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${BASE}/sitemap.xml\n`);
+// Mở cửa cho Google và bot AI (ChatGPT, Claude, Gemini, Perplexity...) đọc trang.
+const AI_BOTS = ['Googlebot', 'Bingbot', 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'anthropic-ai', 'Google-Extended', 'PerplexityBot', 'Perplexity-User', 'CCBot', 'Applebot-Extended'];
+write('robots.txt', `User-agent: *\nAllow: /\nDisallow: /api/\n\n${AI_BOTS.map(b => `User-agent: ${b}\nAllow: /\nDisallow: /api/\n`).join('\n')}\nSitemap: ${BASE}/sitemap.xml\n`);
+// llms.txt: bản tóm tắt cho AI đọc nhanh cửa hàng và sản phẩm.
+write('llms.txt', `# ${SHOP_NAME} - Trạm sạc dự phòng 220V ENERJOY
+
+> Cửa hàng bán trạm sạc di động, trạm tích điện 220V thương hiệu ENERJOY (400W đến 3000W) và tấm pin năng lượng mặt trời MONO. Dùng dự phòng mất điện cho gia đình, cắm trại, bán hàng đêm. Website: ${BASE}/ . Hotline, Zalo: ${S.phone}.
+
+Chính sách: ${POL}
+
+## Trạm sạc
+${P.map(p => `- [${p.name}](${BASE}${prodUrl(p)}): ${p.watt}W${p.sine ? ' sóng sin chuẩn' : ''}, ${p.variants.map(v => `${v.code} ${fmt(v.wh)} Wh${v.price ? ' giá ' + fmt(v.price) + 'đ' : ''}`).join('; ')}. ${p.useFor.join(', ')}.`).join('\n')}
+
+## Tấm pin năng lượng mặt trời
+${SO.map(p => `- [${p.name}](${BASE}${prodUrl(p)}): ${p.variants.map(v => v.code + (v.price ? ' giá ' + fmt(v.price) + 'đ' : '')).join('; ')}.`).join('\n')}
+
+## Bài viết
+${ARTICLES.map(a => `- [${a.h1}](${BASE}${artUrl(a)}): ${a.desc}`).join('\n')}
+
+## Kênh chính thức
+${[['Facebook', S.facebook], ['Shopee', S.shopee], ['TikTok Shop', S.tiktok]].filter(x => x[1]).map(([k, u]) => `- ${k}: ${u}`).join('\n')}
+`);
 
 // Trang chủ: thẻ chia sẻ, canonical, dữ liệu cửa hàng, và khối link tĩnh ở chân trang để Google đi tới các trang con.
 let home = fs.readFileSync(path.join(PUB, 'index.html'), 'utf8');
+const homeFaq = [...home.matchAll(/<details><summary>([^<]+)<\/summary><p>([^<]+)<\/p><\/details>/g)].map(m => [m[1], m[2]]);
 const homeHead = `<!--seo-head-->
 <link rel="canonical" href="${BASE}/">
 <meta property="og:type" content="website">
@@ -251,7 +301,7 @@ const homeHead = `<!--seo-head-->
 <meta property="og:url" content="${BASE}/">
 <meta property="og:image" content="${BASE}/img/tram-sac-1100W.webp">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Store', name: SHOP_NAME, brand: { '@type': 'Brand', name: 'ENERJOY' }, url: BASE + '/', telephone: S.phone, image: `${BASE}/img/tram-sac-1100W.webp`, logo: `${BASE}/img/icon-512.png`, sameAs: [S.facebook, S.shopee, S.tiktok].filter(Boolean) })}</script>
-<!--/seo-head-->`;
+${homeFaq.length ? `<script type="application/ld+json">${JSON.stringify(faqLd(homeFaq))}</script>\n` : ''}<!--/seo-head-->`;
 home = home.replace(/<!--seo-head-->[\s\S]*?<!--\/seo-head-->/, '');
 home = home.replace('</head>', homeHead + '\n</head>');
 const links = `<!--seo-links--><nav class="ft-links" aria-label="Trang sản phẩm và bài viết">${P.concat(SO).map(p => `<a href="${prodUrl(p)}">${esc(p.name)}</a>`).join('')}<a href="/bai-viet/">Bài viết hướng dẫn</a>${ARTICLES.map(a => `<a href="${artUrl(a)}">${esc(a.h1)}</a>`).join('')}</nav><!--/seo-links-->`;
