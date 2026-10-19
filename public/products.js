@@ -33,8 +33,8 @@ window.PRODUCTS = [
     ports: ["1 đèn LED", "2 ổ AC 220V", "6 cổng USB"],
     useFor: ["Cắm trại, dã ngoại", "Quạt, đèn, wifi khi mất điện", "Sạc điện thoại, laptop"],
     variants: [
-      { code: "400W-10A", amp: "10A", wh: 111, mah: 30000, size: "230 x 195 x 119 mm", kg: 1.7, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "400W-20A", amp: "20A", wh: 222, mah: 60000, size: "230 x 195 x 120 mm", kg: 2.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "400W-10A", amp: "10A", wh: 111, mah: 30000, size: "230 x 195 x 119 mm", kg: 1.7, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: 2035000 },
+      { code: "400W-20A", amp: "20A", wh: 222, mah: 60000, size: "230 x 195 x 120 mm", kg: 2.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: 3190000 },
     ],
   },
   {
@@ -42,8 +42,8 @@ window.PRODUCTS = [
     ports: ["1 đèn LED", "2 ổ AC 220V", "4 cổng USB", "2 cổng Type C"],
     useFor: ["Cắm trại, dã ngoại", "Quạt, đèn, wifi khi mất điện", "Sạc nhanh qua Type C"],
     variants: [
-      { code: "500W-10A", amp: "10A", wh: 111, mah: 30000, size: "260 x 142 x 162 mm", kg: 3, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "500W-20A", amp: "20A", wh: 222, mah: 60000, size: "260 x 142 x 163 mm", kg: 3.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "500W-10A", amp: "10A", wh: 111, mah: 30000, size: "260 x 142 x 162 mm", kg: 3, charge1: "4 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: 3080000 },
+      { code: "500W-20A", amp: "20A", wh: 222, mah: 60000, size: "260 x 142 x 163 mm", kg: 3.5, charge1: "6 tiếng", charge2: null, accessories: "1 sạc, 1 HDSD tiếng Việt", price: 3850000 },
     ],
   },
   {
@@ -51,7 +51,7 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "2 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Đi phượt, câu cá, bán hàng đêm", "Quạt, tivi nhỏ, wifi", "Có tẩu cắm thiết bị ô tô"],
     variants: [
-      { code: "600W-30A", amp: "30A", wh: 333, mah: 90000, size: "260 x 192 x 196 mm", kg: 4.5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "600W-30A", amp: "30A", wh: 333, mah: 90000, size: "260 x 192 x 196 mm", kg: 4.5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: 5500000 },
     ],
   },
   {
@@ -59,7 +59,7 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "3 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Gia đình dự phòng mất điện", "Quạt, tivi, wifi, camera", "Bán hàng lưu động"],
     variants: [
-      { code: "1100W-30A", amp: "30A", wh: 333, mah: 90000, size: "190 x 300 x 190 mm", kg: 5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "1100W-30A", amp: "30A", wh: 333, mah: 90000, size: "190 x 300 x 190 mm", kg: 5, charge1: "7 tiếng", charge2: "4 tiếng", accessories: "1 sạc, 1 HDSD tiếng Việt", price: 6050000 },
     ],
   },
   {
@@ -67,8 +67,8 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "4 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Dự phòng cả nhà khi mất điện", "Quạt, tủ lạnh, tivi, wifi", "Cửa hàng, quầy bán nhỏ"],
     variants: [
-      { code: "1600W-60A", amp: "60A", wh: 666, mah: 180000, size: "190 x 300 x 189 mm", kg: 9.5, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "1600W-100A", amp: "100A", wh: 1110, mah: 300000, size: "190 x 300 x 190 mm", kg: 10, charge1: "10 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
+      { code: "1600W-60A", amp: "60A", wh: 666, mah: 180000, size: "190 x 300 x 189 mm", kg: 9.5, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: 9350000 },
+      { code: "1600W-100A", amp: "100A", wh: 1110, mah: 300000, size: "190 x 300 x 190 mm", kg: 10, charge1: "10 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: 14300000 },
     ],
   },
   {
@@ -76,8 +76,8 @@ window.PRODUCTS = [
     ports: ["6 đèn LED", "5 ổ AC 220V", "4 cổng USB", "4 cổng Type C", "1 tẩu sạc ô tô"],
     useFor: ["Sóng sin chuẩn, chạy thiết bị có động cơ", "Dự phòng gia đình, văn phòng", "Công trình, sự kiện ngoài trời"],
     variants: [
-      { code: "3000W-100A", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 265 mm", kg: 20, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null },
-      { code: "3000W-100A sạc nhanh", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 266 mm", kg: 20, charge1: "5 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: null, fast: true },
+      { code: "3000W-100A", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 265 mm", kg: 20, charge1: "4 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: 18700000 },
+      { code: "3000W-100A sạc nhanh", amp: "100A", wh: 2590, mah: 700000, size: "225 x 400 x 266 mm", kg: 20, charge1: "5 tiếng", charge2: null, accessories: "2 sạc, 1 HDSD tiếng Việt", price: 20900000, fast: true },
     ],
   },
 ];
@@ -119,9 +119,9 @@ window.SOLAR = [
     photos: ["img/nlmt/mono-2.webp", "img/nlmt/mono-3.webp", "img/nlmt/mono-4.webp", "img/nlmt/mono-mat-truoc-sau.webp"],
     useFor: ["Nạp điện cho trạm sạc khi cắm trại, đi xa", "Hộp đấu nối chống nước IP67", "Chịu nhiệt từ -40 °C đến 85 °C"],
     variants: [
-      { code: "NLMT MONO 100W", w: 100, volt: "18V", cells: 32, eff: "23%", size: "450 x 1190 x 25 x 20 mm", kg: 5.1, price: null, fit: "Dùng cho trạm ENERJOY 400W, 500W, 600W, 1100W, 1600W. Máy 400W và 500W dùng 1 tấm, máy 600W, 1100W và 1600W ghép tối đa 2 tấm", fits: [{ w: 400, max: 1 }, { w: 500, max: 1 }, { w: 600, max: 2 }, { w: 1100, max: 2 }, { w: 1600, max: 2 }],
+      { code: "NLMT MONO 100W", w: 100, volt: "18V", cells: 32, eff: "23%", size: "450 x 1190 x 25 x 20 mm", kg: 5.1, price: 1760000, fit: "Dùng cho trạm ENERJOY 400W, 500W, 600W, 1100W, 1600W. Máy 400W và 500W dùng 1 tấm, máy 600W, 1100W và 1600W ghép tối đa 2 tấm", fits: [{ w: 400, max: 1 }, { w: 500, max: 1 }, { w: 600, max: 2 }, { w: 1100, max: 2 }, { w: 1600, max: 2 }],
         specs: [["Công suất tối đa", "100 W"], ["Sai số", "3%"], ["Điện áp mạch hở", "23,26 V"], ["Điện áp tại công suất tối đa", "19,38 V"], ["Dòng điện tại công suất tối đa", "5,16 A"], ["Dòng ngắn mạch", "5,58 A"], ["Hiệu suất mô-đun", "18,7%"], ["Hiệu suất tế bào quang điện", "23%"], ["Cầu chì nối tiếp định mức", "10 A"], ["Hộp đấu nối", "IP67"], ["Điện áp hệ thống tối đa", "DC 1500 V"], ["Nhiệt độ hoạt động", "-40 °C đến 85 °C"]] },
-      { code: "NLMT MONO 200W", w: 200, volt: "24V", cells: 48, eff: "24,6%", size: "770 x 1160 x 30 x 25 mm", kg: 8.5, price: null, fit: "Dùng cho trạm ENERJOY 3000W, có thể ghép 1 đến 2 tấm", fits: [{ w: 3000, max: 2 }],
+      { code: "NLMT MONO 200W", w: 200, volt: "24V", cells: 48, eff: "24,6%", size: "770 x 1160 x 30 x 25 mm", kg: 8.5, price: 2970000, fit: "Dùng cho trạm ENERJOY 3000W, có thể ghép 1 đến 2 tấm", fits: [{ w: 3000, max: 2 }],
         specs: [["Công suất tối đa", "200 W"], ["Sai số", "3%"], ["Điện áp mạch hở", "32,83 V"], ["Điện áp tại công suất tối đa", "27,36 V"], ["Dòng điện tại công suất tối đa", "7,31 A"], ["Dòng ngắn mạch", "7,9 A"], ["Hiệu suất mô-đun", "22,4%"], ["Hiệu suất tế bào quang điện", "24,6%"], ["Cầu chì nối tiếp định mức", "10 A"], ["Hộp đấu nối", "IP67"], ["Điện áp hệ thống tối đa", "DC 1000 V"], ["Nhiệt độ hoạt động", "-40 °C đến 85 °C"]] }
     ]
   }
@@ -133,5 +133,5 @@ window.SOLAR = [
     "NLMT MONO 100W": "Dùng cho trạm ENERJOY 600W, 1100W, 1600W, đủ 2 tấm để sạc tối đa",
     "NLMT MONO 200W": "Dùng cho trạm ENERJOY 3000W, đủ 2 tấm để sạc tối đa",
   };
-  v.push(...v.map(x => ({ ...x, code: "Combo 2 tấm MONO " + x.w + "W", qty: 2, price: null, fit: combo[x.code], fits: null })));
+  v.push(...v.map(x => ({ ...x, code: "Combo 2 tấm MONO " + x.w + "W", qty: 2, price: x.price ? x.price * 2 : null, fit: combo[x.code], fits: null })));
 })();
