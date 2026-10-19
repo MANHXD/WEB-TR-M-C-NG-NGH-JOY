@@ -15,9 +15,7 @@ const ARTICLES = require('./articles.cjs');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const fmt = n => Number(n).toLocaleString('vi-VN');
 const kg = n => String(n).replace('.', ',') + ' kg';
-const SALE = (S => S && S.pct && new Date() <= new Date(S.until + 'T23:59:59+07:00') ? S : null)(S.sale);
-const salePrice = v => SALE && v.price ? Math.round(v.price * (100 - SALE.pct) / 100000) * 1000 : v.price;
-const priceText = v => !v.price ? 'Liên hệ' : SALE ? fmt(salePrice(v)) + 'đ (giá gốc ' + fmt(v.price) + 'đ, giảm ' + SALE.pct + '% đến hết ' + SALE.until.split('-').reverse().join('/') + ')' : fmt(v.price) + 'đ';
+const priceText = v => v.price ? fmt(v.price) + 'đ' : 'Liên hệ';
 const prodUrl = p => p.solar ? '/tam-pin-nang-luong-mat-troi-mono/' : `/tram-sac-${p.id}/`;
 const artUrl = a => `/bai-viet/${a.slug}/`;
 const today = new Date().toISOString().slice(0, 10);
@@ -223,7 +221,7 @@ function breadcrumb(items) {
 }
 function productLd(p, desc) {
   return { '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: desc, image: [`${BASE}/${p.img}`], brand: { '@type': 'Brand', name: 'ENERJOY' },
-    offers: p.variants.filter(v => v.price).map(v => ({ '@type': 'Offer', sku: v.code, price: salePrice(v), priceCurrency: 'VND', ...(SALE ? { priceValidUntil: SALE.until } : {}), availability: 'https://schema.org/InStock', url: BASE + prodUrl(p) })) };
+    offers: p.variants.filter(v => v.price).map(v => ({ '@type': 'Offer', sku: v.code, price: v.price, priceCurrency: 'VND', availability: 'https://schema.org/InStock', url: BASE + prodUrl(p) })) };
 }
 
 // ---------- ghi file ----------
