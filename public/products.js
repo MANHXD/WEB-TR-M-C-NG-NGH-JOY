@@ -13,6 +13,8 @@ window.SHOP = {
   tiktok: "https://vt.tiktok.com/ZS9Ur7LqbBabW-39Li8/",
   address: "Đang cập nhật",     // TODO: địa chỉ kho / cửa hàng
   warranty: "Bảo hành chính hãng 5 năm",
+  // Khuyến mại thật: giảm % trên giá đang bán (price). Hết hạn (until, hết ngày) thì web tự về giá thường. Xoá dòng này để tắt.
+  sale: { pct: 10, until: "2026-10-31" },
   // Chính sách bán hàng, hiện ở trang chủ, trang sản phẩm, hỏi đáp và chân trang
   policies: [
     { icon: "shield", title: "Bảo hành 5 năm", text: "Cam kết bảo hành chính hãng 5 năm." },

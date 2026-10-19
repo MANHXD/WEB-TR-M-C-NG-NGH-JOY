@@ -117,6 +117,12 @@ section.blk{padding-block:56px}
 .price{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px}
 .price strong{font:700 18px/1 var(--f-display);color:var(--accent)}
 .price span{font-size:14px;color:var(--muted)}
+.price b.now{color:#c8102e}
+.price s.was{font:500 .78em/1 var(--f-body,inherit);color:#a8adb7;margin-left:8px}
+.pd .price{flex-direction:column;align-items:flex-start;gap:8px}
+.pd .price strong{font-size:28px}
+.price strong{display:flex;flex-wrap:wrap;align-items:baseline;row-gap:4px}
+.sale-note{margin:-6px 0 16px;padding:8px 12px;background:#e3ecfd;color:#1d3f8f;border-radius:8px;font-size:14px}
 
 /* bộ lọc */
 .filters{display:flex;gap:8px;flex-wrap:wrap}
@@ -374,6 +380,7 @@ tr.no{background:rgba(220,38,38,.07)}tr.no th a{color:#DC2626}tr.no td span{colo
 
 
 
+
 <!--seo-head-->
 <link rel="canonical" href="https://www.enerjoy.vn/">
 <meta property="og:type" content="website">
@@ -436,7 +443,10 @@ const track = (()=>{
 const $ = (s, el=document) => el.querySelector(s);
 const app = $('#app');
 const fmt = n => n.toLocaleString('vi-VN');
-const priceText = v => v.price ? fmt(v.price) + 'đ' : 'Liên hệ';
+const SALE = (S => S && S.pct && new Date() <= new Date(S.until + 'T23:59:59+07:00') ? S : null)(SHOP.sale);
+const salePrice = v => SALE && v.price ? Math.round(v.price * (100 - SALE.pct) / 100000) * 1000 : v.price;
+const saleEnd = () => SALE.until.split('-').reverse().slice(0, 2).join('/');
+const priceText = v => !v.price ? 'Liên hệ' : SALE ? `<b class="now">${fmt(salePrice(v))}đ</b><s class="was">${fmt(v.price)}đ</s>` : fmt(v.price) + 'đ';
 const minWh = p => Math.min(...p.variants.map(v=>v.wh));
 const codes = p => p.variants.map(v=>v.code).join(' / ');
 const maxWh = p => Math.max(...p.variants.map(v=>v.wh));
@@ -636,7 +646,7 @@ function solarDetail(p){
         <p class="lead">${p.useFor.join('. ')}.</p>
         <div class="lbl">Chọn phân loại</div><div class="vars">${p.variants.map((x,i)=>`<button class="var ${i===vi?'on':''}" data-v="${i}"><b>${x.code}</b><small>${x.qty?x.qty+' tấm, ':''}${x.volt}, ${String(x.kg).replace('.',',')} kg${x.qty?' mỗi tấm':''}</small></button>`).join('')}</div>
         ${v.fit?`<p class="fit">${v.fit}.</p>`:''}
-        <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
+        <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>${SALE&&v.price?`<div class="sale-note">Giảm ${SALE.pct}% đến hết ${saleEnd()}, tiết kiệm ${fmt(v.price-salePrice(v))}đ</div>`:''}
         <ul class="pol">${S.policies.map(x=>`<li><b>${x.title}.</b> ${x.text}</li>`).join('')}</ul>
         <div class="btns">
           <a class="btn btn-pri" href="#lien-he" data-order="${v.code}">Đặt mua ${v.code}</a>
@@ -669,7 +679,7 @@ function detail(p){
         ${SO.flatMap(s=>s.variants.map(x=>[s,x,(x.fits||[]).find(f=>f.w===p.watt)]).filter(a=>a[2])).map(([s,x,f])=>`<p class="fit">Sạc bằng năng lượng mặt trời: dùng <a href="#sp-${s.id}">${x.code}</a>${f.max===1?', tối đa 1 tấm':f.max?`, ghép tối đa ${f.max} tấm`:''}.</p>`).join('')}
         <div class="lbl">Cổng ra</div>
         <ul class="ports">${p.ports.map(x=>`<li>${x}</li>`).join('')}</ul>
-        <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>
+        <div class="price"><span>Giá ${v.code}</span><strong>${priceText(v)}</strong></div>${SALE&&v.price?`<div class="sale-note">Giảm ${SALE.pct}% đến hết ${saleEnd()}, tiết kiệm ${fmt(v.price-salePrice(v))}đ</div>`:''}
         <ul class="pol">${S.policies.map(x=>`<li><b>${x.title}.</b> ${x.text}</li>`).join('')}</ul>
         <div class="btns">
           <a class="btn btn-pri" href="#lien-he" data-order="${v.code}">Đặt mua ${v.code}</a>
